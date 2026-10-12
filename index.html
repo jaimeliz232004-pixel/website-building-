@@ -254,6 +254,10 @@
     .submit-btn:hover { opacity:.9; transform:translateY(-1px); }
     .f-note { font-size:11.5px; color:var(--muted); text-align:center; margin-top:.6rem; }
     @media(max-width:768px){ .cta-grid{grid-template-columns:1fr;} }
+    /* Mobile fix: let grid columns shrink to the screen instead of growing to fit their widest item */
+    .cta-grid > *, .about-grid > * { min-width:0; }
+    /* Mobile fix: on small screens give the animated banner a fixed height instead of a ratio that forced it wider than the phone */
+    @media(max-width:768px){ .cta-canvas-wrap{ aspect-ratio:auto; height:220px; min-height:0; } }
     @media(max-width:480px){ .f-row{grid-template-columns:1fr;} }
 
     /* ── FOOTER ── */
@@ -741,6 +745,11 @@
     b.textContent="Request Received — We'll Be In Touch Shortly.";
     b.disabled=true;b.style.opacity='.7';
   });
+  </script>
+  <script>
+    /* Always open the page at the top, unless someone used a #section link */
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.addEventListener('load', () => { if (!location.hash) window.scrollTo(0, 0); });
   </script>
   <script>
     function openChat(e) {
