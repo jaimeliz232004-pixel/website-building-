@@ -2,295 +2,401 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0c0c0c"/>
   <title>Desert Peak Roofing & HVAC — Phoenix, AZ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>document.documentElement.classList.add('js')</script>
   <style>
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+/* ================================================================
+   Desert Peak — original palette & type, refined system
+   ================================================================ */
 
-    :root {
-      --bg:      #0c0c0c;
-      --surface: #141414;
-      --edge:    #1f1f1f;
-      --edge2:   #2a2a2a;
-      --ink:     #f0ede8;
-      --ink2:    #a8a49f;
-      --muted:   #666;
-      --green:   #4dff7c;
-      --light:   #f2f0eb;
-      --light2:  #e8e5df;
-      --light-ink:#0c0c0c;
-      --light-ink2:#444;
-    }
+/* ── Tokens ── */
+:root{
+  /* palette (unchanged brand values) */
+  --bg:#0c0c0c;--surface:#141414;--surface2:#191919;--edge:#272727;--edge2:#3d3d3d;
+  --ink:#f0ede8;--ink2:#b3b0aa;--muted:#a3a09b;
+  --green:#4dff7c;--green-hi:#82ff9f;--green-deep:#155c2a;--green-ink:#22793a;
+  --light:#f2f0eb;--light2:#e8e5df;--light-hi:#f8f7f3;--light-edge:#d6d4cc;--light-ink:#0c0c0c;--light-ink2:#444;--light-muted:#5e625b;
+  /* spacing scale */
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px;--s9:96px;
+  --gutter:clamp(20px,5vw,80px);
+  --maxw:1360px;
+  --pad:max(var(--gutter),calc((100% - var(--maxw)) / 2));
+  --section:clamp(88px,10vw,144px);
+  --nav-h:84px;
+  /* shape */
+  --r-sm:8px;--r-md:14px;--r-lg:22px;
+  /* motion */
+  --ease:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.34,1.45,.64,1);
+  --t-fast:180ms;--t:320ms;--t-slow:900ms;
+  /* depth */
+  --glow:0 10px 30px -10px rgba(77,255,124,.55),0 2px 6px -2px rgba(77,255,124,.35);
+  --lift-dark:0 1px 0 rgba(255,255,255,.04) inset,0 40px 80px -40px rgba(0,0,0,.9),0 12px 24px -12px rgba(0,0,0,.6);
+  --lift-light:0 1px 2px rgba(12,12,12,.04),0 24px 48px -28px rgba(12,12,12,.22);
+}
 
-    html { scroll-behavior:smooth; color-scheme:dark; }
-    body {
-      background:var(--bg); color:var(--ink);
-      font-family:'Sora',ui-sans-serif,system-ui,sans-serif;
-      font-size:15px; line-height:1.5;
-      -webkit-font-smoothing:antialiased; overflow-x:clip;
-    }
-    a { color:inherit; text-decoration:none; }
-    button { background:none; border:none; cursor:pointer; font-family:inherit; color:inherit; }
-    img { display:block; max-width:100%; }
+/* ── Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);color-scheme:dark;scrollbar-color:#444 var(--bg)}
+html.menu-open{overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Outfit',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip}
+::selection{background:var(--green);color:var(--bg)}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+button{border:0;background:none;color:inherit;cursor:pointer}
+button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
+button,a{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:2px}
+img,svg{max-width:100%}img{display:block}
+h1,h2,h3,h4{font-family:'Sora',sans-serif;text-wrap:balance}
+p{text-wrap:pretty}
+[hidden]{display:none!important}
+.skip-link{position:fixed;top:12px;left:12px;padding:10px 18px;border-radius:var(--r-sm);background:var(--green);color:var(--bg);font-weight:600;z-index:1000;transform:translateY(-160%);transition:transform var(--t-fast) var(--ease)}
+.skip-link:focus{transform:none}
 
-    /* ── CSS ENTRANCE ANIMATIONS (AKOR style) ── */
-    @keyframes fadeUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
-    @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
-    @keyframes slideLeft{ from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:none} }
+/* ── Layout primitives ── */
+.sec{padding:var(--section) var(--pad);scroll-margin-top:0}
+.sec-label{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:var(--s5)}
+.sec-label::before{content:'';width:18px;height:1px;background:currentColor}
+.sec-title{font-size:clamp(34px,4vw,58px);line-height:1.08;font-weight:600;letter-spacing:-.04em}
+.sec-title em{font-style:normal;color:var(--green)}
+.sec-sub{max-width:46ch;color:var(--ink2);margin-top:var(--s5);font-size:17px;line-height:1.75}
+.light{background:var(--light);color:var(--light-ink);color-scheme:light}
+.light :focus-visible{outline-color:var(--green-deep)}
+.light .sec-label{color:var(--green-deep)}
 
-    .rv { opacity:0; }
-    .rv.in { animation:fadeUp .75s cubic-bezier(.2,.8,.2,1) forwards; }
-    .rv.in.slide { animation-name:slideLeft; }
-    .rv.in.fade  { animation-name:fadeIn; }
-    .rv.d1.in{animation-delay:.08s} .rv.d2.in{animation-delay:.16s}
-    .rv.d3.in{animation-delay:.24s} .rv.d4.in{animation-delay:.32s}
-    .rv.d5.in{animation-delay:.40s} .rv.d6.in{animation-delay:.48s}
+/* ── Reveal on scroll (content stays visible without JS) ── */
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity var(--t-slow) var(--ease),transform var(--t-slow) var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:80ms}.rv.d2{transition-delay:160ms}.rv.d3{transition-delay:240ms}.rv.d4{transition-delay:320ms}.rv.d5{transition-delay:400ms}
 
-    /* ── NAV ── */
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:50;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:0 clamp(20px,5vw,60px); height:68px;
-      background:rgba(12,12,12,.92);
-      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--edge);
-    }
-    .nav-logo {
-      display:flex; align-items:center; gap:10px;
-      font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink);
-    }
-    .nav-mark {
-      width:32px; height:32px; background:var(--green); border-radius:6px;
-      display:grid; place-items:center; flex-shrink:0;
-    }
-    .nav-links { display:flex; gap:32px; list-style:none; }
-    .nav-links a { font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink2); transition:color .2s; }
-    .nav-links a:hover { color:var(--ink); }
-    .nav-cta {
-      font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-      background:var(--green); color:var(--light-ink);
-      padding:.6rem 1.4rem; border-radius:6px; transition:opacity .2s;
-    }
-    .nav-cta:hover { opacity:.88; }
-    @media(max-width:800px){ .nav-links{display:none;} }
+/* ── Buttons ── */
+.btn-green,.btn-ghost,.nav-cta,.submit-btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  min-height:52px;padding:14px 26px;border-radius:var(--r-sm);
+  font-size:15px;font-weight:600;letter-spacing:-.005em;white-space:nowrap;
+  transition:transform var(--t) var(--spring),background-color var(--t-fast) ease,border-color var(--t-fast) ease,box-shadow var(--t) var(--ease),color var(--t-fast) ease}
+.btn-green,.nav-cta,.submit-btn{background:var(--green);color:var(--bg)}
+.btn-ghost{border:1px solid var(--edge2);color:var(--ink);background:rgba(255,255,255,.015)}
+.btn-green svg,.submit-btn .arr{transition:transform var(--t) var(--spring)}
+.nav-cta{min-height:44px;padding:10px 18px;font-size:14px}
+.nav-cta::after{content:'↗';font-size:15px;transition:transform var(--t) var(--spring)}
+a:active,button:not(:disabled):active{transform:scale(.97)}
 
-    /* ── HERO ── */
-    .hero {
-      position:relative; min-height:100vh; overflow:hidden;
-      display:flex; flex-direction:column; justify-content:flex-end;
-      padding:0 clamp(20px,5vw,60px) clamp(48px,6vw,80px);
-    }
-    /* Desert sky gradient background */
-    .hero::before {
-      content:''; position:absolute; inset:0; z-index:0;
-      background:
-        radial-gradient(ellipse 60% 50% at 75% 25%, rgba(255,120,30,.08) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 30% at 20% 70%, rgba(255,80,20,.05) 0%, transparent 60%),
-        linear-gradient(160deg, #111 0%, #0c0c0c 50%, #0a0806 100%);
-    }
-    /* Grain texture */
-    .hero::after {
-      content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
-      opacity:.04;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size:200px 200px;
-    }
-    .hero-badge {
-      position:relative; z-index:2;
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
-      color:var(--green); margin-bottom:1.8rem;
-    }
-    .hero-badge::before { content:''; width:20px; height:1px; background:var(--green); }
-    .hero h1 {
-      position:relative; z-index:2;
-      font-size:clamp(52px,9vw,130px); font-weight:800; line-height:.96; letter-spacing:-.03em;
-      color:var(--ink); max-width:13ch; margin-bottom:2rem;
-    }
-    .hero h1 em { font-style:normal; color:var(--green); }
-    .hero-sub {
-      position:relative; z-index:2;
-      font-size:clamp(14px,1.4vw,16px); color:var(--ink2); max-width:44ch; line-height:1.75; margin-bottom:2.4rem;
-    }
-    .hero-actions { position:relative; z-index:2; display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; }
-    .btn-green {
-      display:inline-flex; align-items:center; gap:8px;
-      background:var(--green); color:var(--light-ink);
-      font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-      padding:.9rem 2rem; border-radius:6px; transition:opacity .2s,transform .2s;
-    }
-    .btn-green:hover { opacity:.9; transform:translateY(-1px); }
-    .btn-ghost {
-      display:inline-flex; align-items:center; gap:8px;
-      background:transparent; color:var(--ink2);
-      font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
-      border:1px solid var(--edge2); padding:.9rem 2rem; border-radius:6px; transition:all .2s;
-    }
-    .btn-ghost:hover { border-color:var(--ink2); color:var(--ink); }
-    /* Scroll indicator */
-    .hero-scroll {
-      position:absolute; bottom:clamp(28px,4vw,48px); right:clamp(20px,5vw,60px); z-index:2;
-      display:flex; flex-direction:column; align-items:center; gap:6px;
-      font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
-    }
-    .scroll-line { width:1px; height:48px; background:linear-gradient(to bottom, var(--muted), transparent); animation:scrollpulse 2s ease-in-out infinite; }
-    @keyframes scrollpulse { 0%,100%{opacity:.3;transform:scaleY(.6)} 50%{opacity:1;transform:scaleY(1)} }
+/* ── Nav ── */
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:var(--s6);height:var(--nav-h);padding:0 var(--pad);
+  background:rgba(12,12,12,0);border-bottom:1px solid transparent;
+  transition:background-color var(--t) var(--ease),border-color var(--t) var(--ease),backdrop-filter var(--t) var(--ease)}
+.nav.scrolled{background:rgba(12,12,12,.9);border-bottom-color:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%)}
+.nav-logo{display:inline-flex;align-items:center;gap:12px;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+.nav-mark{width:36px;height:36px;background:var(--green);border-radius:50%;display:grid;place-items:center;flex-shrink:0;transition:transform 600ms var(--spring),box-shadow var(--t) var(--ease)}
+.nav-mark svg{transition:transform 600ms var(--spring)}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none;margin-left:auto}
+.nav-links a{display:block;font-size:14px;color:var(--ink2);padding:9px 14px;border-radius:999px;transition:color var(--t-fast) ease,background-color var(--t-fast) ease}
+.nav-links a[aria-current]{color:var(--ink);background:rgba(255,255,255,.06)}
+.nav-links .nl-arrow{display:none}
+.menu-toggle{display:none}
 
-    /* ── TRUST BAR ── */
-    .trust-bar {
-      background:var(--surface); border-bottom:1px solid var(--edge);
-      padding:1.1rem clamp(20px,5vw,60px);
-      display:flex; justify-content:space-around; flex-wrap:wrap; gap:1rem;
-    }
-    .trust-item { display:flex; align-items:center; gap:.55rem; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink2); }
-    .trust-dot { width:4px; height:4px; border-radius:50%; background:var(--green); flex-shrink:0; }
+/* ── Hero ── */
+.hero{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:center;
+  min-height:min(860px,calc(100svh - var(--nav-h)));padding:clamp(72px,9vw,120px) var(--pad) clamp(96px,10vw,140px);
+  margin-top:calc(var(--nav-h) * -1);padding-top:calc(var(--nav-h) + clamp(64px,8vw,112px));min-height:min(940px,100svh);overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(48% 58% at 78% 46%,rgba(77,255,124,.11),transparent 70%),
+    radial-gradient(40% 40% at 10% 100%,rgba(77,255,124,.05),transparent 70%)}
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-badge{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;padding:7px 14px 7px 12px;margin-bottom:var(--s6);
+  font-size:12.5px;letter-spacing:.03em;color:var(--ink2);border:1px solid var(--edge);border-radius:999px;background:rgba(20,20,20,.6)}
+.hero-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(77,255,124,.15)}
+.hero h1{max-width:11.5ch;font-size:clamp(56px,7.8vw,116px);font-weight:600;line-height:1;letter-spacing:-.05em;margin-bottom:var(--s6)}
+.hero h1 em{color:var(--green);font-style:normal}
+.hero-sub{max-width:46ch;font-size:clamp(16px,1.25vw,18.5px);line-height:1.75;color:var(--ink2);margin-bottom:var(--s6)}
+.hero-actions{display:flex;gap:var(--s3);flex-wrap:wrap}
+.hero-chat{display:inline-flex;align-items:center;gap:10px;margin-top:var(--s5);font-size:13px;font-weight:500;color:var(--green);letter-spacing:.02em}
+.live-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.live-dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--green);animation:ping 2.2s var(--ease) infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.6}80%,100%{transform:scale(2.8);opacity:0}}
+.hero-art{position:absolute;z-index:-1;width:min(54vw,800px);aspect-ratio:1;right:-6%;top:50%;translate:0 -46%;color:var(--green);opacity:.85;pointer-events:none}
+.hero-art svg{width:100%;height:100%;animation:float 9s ease-in-out infinite}
+.hero-art .ring{transform-origin:365px 310px;animation:spin 80s linear infinite}
+@keyframes float{50%{transform:translateY(-14px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-scroll{position:absolute;right:var(--pad);bottom:44px;display:flex;gap:14px;align-items:center;color:var(--ink2);font-size:11px;text-transform:uppercase;letter-spacing:.2em}
+.scroll-line{position:relative;height:1px;width:48px;background:var(--edge2);overflow:hidden}
+.scroll-line::after{content:'';position:absolute;inset:0;background:var(--green);transform-origin:left;animation:scrollcue 2.4s var(--ease) infinite}
+@keyframes scrollcue{0%{transform:scaleX(0)}50%{transform:scaleX(1);transform-origin:left}50.1%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+/* hero entrance */
+.rise{animation:rise 1s var(--ease) both;animation-delay:calc(var(--i,0) * 90ms + 80ms)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
-    /* ── SECTION SHELL ── */
-    .sec { padding:clamp(64px,9vw,120px) clamp(20px,5vw,60px); }
-    .sec-label { font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--green); margin-bottom:1rem; }
-    .sec-title { font-size:clamp(28px,4vw,52px); font-weight:800; line-height:1.05; letter-spacing:-.025em; }
-    .sec-sub { font-size:15px; color:var(--ink2); line-height:1.75; max-width:48ch; margin-top:.8rem; }
+/* ── Trust bar ── */
+.trust-bar{position:relative;overflow:hidden;border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:var(--surface)}
+.trust-track{display:flex;justify-content:space-between;align-items:center;padding:26px var(--pad)}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);white-space:nowrap}
+.trust-dot{width:6px;height:6px;background:var(--green);border-radius:50%;flex-shrink:0}
+.trust-item.dup{display:none}
 
-    /* ── SERVICES (LIGHT BAND) ── */
-    .services-sec { background:var(--light); color:var(--light-ink); }
-    .services-sec .sec-label { color:#666; }
-    .services-sec .sec-title { color:var(--light-ink); }
-    .services-sec .sec-sub { color:var(--light-ink2); }
-    .services-head { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:2rem; margin-bottom:clamp(36px,5vw,64px); }
-    .services-head-link {
-      font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-      color:var(--light-ink2); border-bottom:1px solid #ccc; padding-bottom:2px; transition:color .2s,border-color .2s;
-    }
-    .services-head-link:hover { color:var(--light-ink); border-color:var(--light-ink); }
-    .services-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
-    .svc-card {
-      background:var(--light2); padding:clamp(28px,3.5vw,48px);
-      position:relative; overflow:hidden; cursor:default;
-      transition:background .3s;
-    }
-    .svc-card:hover { background:#dedad3; }
-    .svc-card:hover .svc-arrow { transform:translate(3px,-3px); }
-    .svc-num { font-size:11px; font-weight:700; letter-spacing:.16em; color:#999; margin-bottom:clamp(24px,3vw,40px); }
-    .svc-card h3 { font-size:clamp(18px,2vw,26px); font-weight:700; letter-spacing:-.015em; line-height:1.18; margin-bottom:.8rem; color:var(--light-ink); }
-    .svc-card p { font-size:14px; color:var(--light-ink2); line-height:1.72; max-width:36ch; }
-    .svc-arrow { position:absolute; top:clamp(20px,2.5vw,32px); right:clamp(20px,2.5vw,32px); width:36px; height:36px; border:1px solid #ccc; border-radius:50%; display:grid; place-items:center; transition:transform .3s,border-color .3s; }
-    .svc-card:hover .svc-arrow { border-color:#999; }
-    @media(max-width:640px){ .services-grid{grid-template-columns:1fr;} }
+/* ── Services ── */
+.services-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s6);margin-bottom:var(--s8)}
+.link-underline{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;padding:6px 0;white-space:nowrap}
+.link-underline::after{content:'';position:absolute;left:0;right:0;bottom:2px;height:1px;background:currentColor;opacity:.35;transform-origin:right;transition:transform var(--t) var(--ease),opacity var(--t) var(--ease)}
+.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--light-edge);border:1px solid var(--light-edge);border-radius:var(--r-lg);overflow:hidden}
+.svc-card{position:relative;display:flex;flex-direction:column;padding:clamp(28px,3.6vw,52px);background:var(--light);transition:background-color var(--t) var(--ease)}
+.svc-card::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform 600ms var(--ease)}
+.svc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(36px,5vw,72px)}
+.svc-num{font-family:'Sora',sans-serif;font-size:13px;font-weight:500;color:var(--light-muted);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.svc-arrow{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--light-edge);border-radius:50%;color:var(--light-ink);transition:background-color var(--t) var(--ease),border-color var(--t) var(--ease),color var(--t) var(--ease),transform 500ms var(--spring)}
+.svc-card h3{font-size:clamp(22px,2vw,28px);line-height:1.2;letter-spacing:-.035em;font-weight:600;margin-bottom:var(--s4)}
+.svc-card p{color:var(--light-ink2);font-size:16px;line-height:1.75;max-width:44ch}
 
-    /* ── ABOUT SPLIT ── */
-    .about-sec { background:var(--bg); }
-    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,6vw,100px); align-items:center; }
-    .about-stats { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
-    .a-stat { background:var(--surface); padding:clamp(20px,3vw,36px); }
-    .a-stat-n { font-size:clamp(36px,5vw,64px); font-weight:800; letter-spacing:-.04em; line-height:1; color:var(--ink); }
-    .a-stat-n span { color:var(--green); }
-    .a-stat-l { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:.4rem; }
-    .about-right p { font-size:15px; color:var(--ink2); line-height:1.82; margin-top:1.2rem; }
-    .about-list { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin-top:1.8rem; }
-    .about-list li { font-size:14px; color:var(--ink2); display:flex; align-items:center; gap:.75rem; }
-    .about-list li::before { content:''; width:18px; height:1px; background:var(--green); flex-shrink:0; }
-    .about-cta { margin-top:2.4rem; }
-    @media(max-width:768px){ .about-grid{grid-template-columns:1fr;} }
+/* ── About ── */
+.about-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(48px,8vw,128px);align-items:center}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-lg);overflow:hidden}
+.a-stat{position:relative;padding:clamp(24px,3vw,40px);background:var(--bg);transition:background-color var(--t) var(--ease)}
+.a-stat-n{font-family:'Sora',sans-serif;font-weight:500;font-size:clamp(44px,4.6vw,68px);letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.a-stat-n .g,.a-stat-n .star{color:var(--green)}
+.a-stat-n .star{font-size:.55em;margin-left:.08em;vertical-align:.35em}
+.a-stat-n .unit{font-size:.55em;color:var(--ink2)}
+.a-stat-l{font-size:13px;color:var(--ink2);margin-top:var(--s4);letter-spacing:.01em}
+.about-right p{margin-top:var(--s5);color:var(--ink2);font-size:17px;line-height:1.8;max-width:54ch}
+.about-list{list-style:none;margin-top:var(--s6);display:grid;gap:0;border-top:1px solid var(--edge)}
+.about-list li{display:flex;align-items:center;gap:var(--s4);padding:14px 0;border-bottom:1px solid var(--edge);color:var(--ink2);font-size:15.5px;transition:color var(--t-fast) ease,padding var(--t) var(--ease)}
+.about-list li::before{content:'';flex-shrink:0;width:18px;height:18px;border-radius:50%;background:rgba(77,255,124,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5.5 9.2l2.3 2.3 4.7-5' fill='none' stroke='%234dff7c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+.about-cta{margin-top:var(--s7)}
 
-    /* ── PROCESS ── */
-    .process-sec { background:var(--surface); border-top:1px solid var(--edge); border-bottom:1px solid var(--edge); }
-    .process-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--edge); margin-top:clamp(36px,5vw,64px); }
-    .proc-card { background:var(--surface); padding:clamp(24px,3.5vw,44px); position:relative; transition:background .3s; }
-    .proc-card:hover { background:var(--edge); }
-    .proc-num { font-size:clamp(48px,6vw,80px); font-weight:800; line-height:1; letter-spacing:-.04em; color:var(--edge2); margin-bottom:1.4rem; transition:color .4s; }
-    .proc-card:hover .proc-num { color:var(--green); }
-    .proc-card h3 { font-size:clamp(15px,1.5vw,18px); font-weight:700; letter-spacing:-.01em; margin-bottom:.55rem; }
-    .proc-card p { font-size:13.5px; color:var(--ink2); line-height:1.75; }
-    @media(max-width:640px){ .process-grid{grid-template-columns:1fr;} }
+/* ── Process ── */
+.process-sec{background:var(--surface);border-top:1px solid var(--edge)}
+.process-head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s6)}
+.process-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px);margin-top:var(--s8);list-style:none}
+.process-grid::before{content:'';position:absolute;left:24px;right:0;top:24px;height:1px;background:linear-gradient(90deg,var(--edge2),var(--edge2) 70%,transparent)}
+.proc-card{position:relative}
+.proc-num{position:relative;display:grid;place-items:center;width:48px;height:48px;margin-bottom:var(--s6);border:1px solid var(--edge2);border-radius:50%;background:var(--surface);
+  font-family:'Sora',sans-serif;font-size:13px;font-weight:500;color:var(--green);font-variant-numeric:tabular-nums;
+  transition:background-color var(--t) var(--ease),color var(--t) var(--ease),border-color var(--t) var(--ease),transform 500ms var(--spring),box-shadow var(--t) var(--ease)}
+.proc-card h3{font-size:clamp(19px,1.6vw,22px);line-height:1.35;font-weight:600;letter-spacing:-.03em;margin-bottom:var(--s3)}
+.proc-card p{color:var(--ink2);font-size:16px;line-height:1.8;max-width:40ch}
 
-    /* ── REVIEWS ── */
-    .reviews-sec { background:var(--bg); }
-    .review-head { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:2rem; margin-bottom:clamp(36px,5vw,64px); }
-    .review-rating { text-align:right; }
-    .review-rating b { display:block; font-size:clamp(36px,5vw,56px); font-weight:800; letter-spacing:-.04em; line-height:1; }
-    .review-rating small { font-size:12px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
-    .review-quote { max-width:800px; margin:0 auto; text-align:center; }
-    .review-quote blockquote { font-size:clamp(19px,2.4vw,28px); font-weight:600; line-height:1.35; letter-spacing:-.015em; transition:opacity .4s; }
-    .review-by { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:28px; }
-    .r-avatar { width:40px; height:40px; border-radius:50%; background:var(--surface); display:grid; place-items:center; font-size:13px; font-weight:700; color:var(--muted); flex-shrink:0; }
-    .r-name { font-size:14px; font-weight:600; }
-    .r-role { font-size:12.5px; color:var(--muted); margin-top:2px; }
-    .review-nav { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:28px; }
-    .r-btn { width:38px; height:38px; border:1px solid var(--edge2); border-radius:50%; display:grid; place-items:center; transition:border-color .2s,background .2s; }
-    .r-btn:hover { border-color:var(--ink2); background:var(--surface); }
-    .r-dots { display:flex; gap:6px; }
-    .r-dot { width:6px; height:6px; border-radius:6px; background:var(--edge2); transition:width .35s cubic-bezier(.2,.8,.2,1),background .3s; border:none; cursor:pointer; }
-    .r-dot.on { width:22px; background:var(--green); }
+/* ── Reviews ── */
+.review-head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s6);margin-bottom:var(--s7)}
+.review-rating{display:flex;align-items:center;gap:var(--s4);padding:14px 22px 14px 18px;border:1px solid var(--light-edge);border-radius:999px;background:var(--light-hi)}
+.review-rating b{font-family:'Sora',sans-serif;font-size:30px;font-weight:600;letter-spacing:-.04em;line-height:1}
+.review-rating b span{color:var(--green-ink);font-size:20px;margin-left:2px;vertical-align:2px}
+.review-rating small{font-size:13px;color:var(--light-ink2);line-height:1.3;max-width:9ch}
+.review-quote{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--s7) var(--s6);
+  padding:clamp(32px,5.5vw,80px);padding-top:clamp(72px,8vw,112px);background:var(--light-hi);border:1px solid var(--light-edge);border-radius:var(--r-lg);box-shadow:var(--lift-light)}
+.review-quote::before{content:'\201C';position:absolute;top:clamp(8px,1.6vw,20px);left:clamp(26px,5.2vw,74px);font-family:'Sora',sans-serif;font-size:clamp(96px,10vw,148px);line-height:1;color:var(--green-ink);opacity:.9}
+.rq-stack{grid-column:1 / -1;display:grid}
+.rq-stack>*{grid-area:1 / 1}
+.rq-ghost{visibility:hidden;pointer-events:none}
+.review-quote blockquote{max-width:34em;font-family:'Sora',sans-serif;font-size:clamp(21px,2.3vw,32px);font-weight:400;letter-spacing:-.03em;line-height:1.5}
+.review-by{display:flex;align-items:center;gap:14px}
+.r-avatar{width:50px;height:50px;display:grid;place-items:center;border-radius:50%;background:var(--light-ink);color:var(--green);font-family:'Sora',sans-serif;font-size:13px;font-weight:600;letter-spacing:.02em}
+.r-name{font-weight:600;font-size:16px}
+.r-role{font-size:13px;color:var(--light-ink2);margin-top:2px}
+.review-nav{display:flex;align-items:center;gap:var(--s2)}
+.r-btn{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--light-edge);border-radius:50%;background:var(--light);transition:background-color var(--t-fast) ease,border-color var(--t-fast) ease,color var(--t-fast) ease,transform var(--t) var(--spring)}
+.r-dots{display:flex}
+.r-dot{width:24px;height:44px;display:grid;place-items:center}
+.r-dot::after{content:'';width:6px;height:6px;border-radius:999px;background:#b4b6ab;transition:transform var(--t) var(--ease),background-color var(--t) var(--ease)}
+.r-dot.on::after{background:var(--light-ink);transform:scaleX(2.4)}
 
-    /* ── CTA / CONTACT ── */
-    .cta-sec { background:var(--surface); border-top:1px solid var(--edge); }
-    .cta-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,6vw,100px); align-items:start; }
-    .cta-left h2 { font-size:clamp(28px,4vw,50px); font-weight:800; line-height:1.06; letter-spacing:-.03em; }
-    .cta-left p { font-size:15px; color:var(--ink2); line-height:1.8; margin-top:1rem; max-width:40ch; }
-    .cta-promise { display:flex; flex-direction:column; gap:.65rem; margin-top:2rem; }
-    .cta-promise span { font-size:13px; color:var(--ink2); display:flex; align-items:center; gap:.75rem; }
-    .cta-promise span::before { content:''; width:18px; height:1px; background:var(--green); flex-shrink:0; }
-    /* Form */
-    .cta-form { display:flex; flex-direction:column; gap:12px; }
-    .fg { display:flex; flex-direction:column; gap:6px; }
-    .fg label { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
-    .fg input,.fg textarea,.fg select {
-      background:var(--edge); border:1px solid var(--edge2); color:var(--ink);
-      padding:12px 14px; font-size:14px; font-family:inherit; border-radius:6px; outline:none;
-      transition:border-color .2s,background .2s; width:100%;
-    }
-    .fg input::placeholder,.fg textarea::placeholder { color:var(--muted); }
-    .fg input:focus,.fg textarea:focus,.fg select:focus { border-color:var(--edge2); background:var(--surface); border-color:rgba(77,255,124,.3); }
-    .fg select option { background:var(--surface); }
-    .fg textarea { height:96px; resize:none; }
-    .f-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .urgency { display:inline-flex; align-items:center; gap:.5rem; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink2); background:var(--edge); border:1px solid var(--edge2); padding:.4rem .9rem; border-radius:4px; margin-bottom:1rem; }
-    .u-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pdot 1.8s ease-in-out infinite; }
-    @keyframes pdot { 0%,100%{opacity:1} 50%{opacity:.3} }
-    .submit-btn { width:100%; padding:1rem; background:var(--green); color:var(--light-ink); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; border:none; border-radius:6px; cursor:pointer; font-family:inherit; transition:opacity .2s,transform .2s; }
-    .submit-btn:hover { opacity:.9; transform:translateY(-1px); }
-    .f-note { font-size:11.5px; color:var(--muted); text-align:center; margin-top:.6rem; }
-    @media(max-width:768px){ .cta-grid{grid-template-columns:1fr;} }
-    /* Mobile fix: let grid columns shrink to the screen instead of growing to fit their widest item */
-    .cta-grid > *, .about-grid > * { min-width:0; }
-    /* Mobile fix: on small screens give the animated banner a fixed height instead of a ratio that forced it wider than the phone */
-    @media(max-width:768px){ .cta-canvas-wrap{ aspect-ratio:auto; height:220px; min-height:0; } }
-    @media(max-width:480px){ .f-row{grid-template-columns:1fr;} }
+/* ── Contact ── */
+.cta-grid{display:grid;grid-template-columns:1fr 1.02fr;gap:clamp(48px,7vw,112px);align-items:start}
+.cta-left{position:sticky;top:calc(var(--nav-h) + 32px)}
+.cta-promise{margin-top:var(--s6);display:grid;gap:var(--s3)}
+.cta-promise span{display:flex;align-items:center;gap:var(--s3);font-size:15px;color:var(--ink2)}
+.cta-promise span::before{content:'';flex-shrink:0;width:18px;height:18px;border-radius:50%;background:rgba(77,255,124,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M5.5 9.2l2.3 2.3 4.7-5' fill='none' stroke='%234dff7c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+.cta-canvas-wrap{position:relative;height:200px;overflow:hidden;margin-bottom:var(--s7);border-radius:var(--r-md);background:#12271a;border:1px solid rgba(77,255,124,.12)}
+.cta-canvas-wrap canvas{position:absolute;width:100%;height:100%;inset:0}
+.cta-canvas-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,12,12,.88),rgba(12,12,12,.1) 70%)}
+.cta-canvas-text{position:absolute;bottom:22px;left:24px;right:24px}
+.cta-canvas-text p{font-size:11px;color:var(--green);letter-spacing:.14em;text-transform:uppercase;margin:0 0 6px}
+.cta-canvas-text h3{font-size:22px;font-weight:500;letter-spacing:-.03em}
+.quote-panel{position:relative;padding:clamp(24px,3.4vw,44px);border:1px solid var(--edge);border-radius:var(--r-lg);background:linear-gradient(180deg,var(--surface2),var(--surface));box-shadow:var(--lift-dark)}
+.quote-panel::before{content:'';position:absolute;top:-1px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(77,255,124,.7),transparent)}
+.urgency{display:flex;align-items:center;gap:10px;color:var(--ink2);font-size:13px;padding-bottom:var(--s5);margin-bottom:var(--s6);border-bottom:1px solid var(--edge)}
+.cta-form{display:grid;gap:var(--s5)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+.fg{display:grid;gap:var(--s2)}
+.fg label{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:.01em}
+.fg input,.fg textarea,.fg select{width:100%;min-width:0;min-height:52px;border:1px solid var(--edge2);background:#1c1c1c;border-radius:var(--r-sm);padding:13px 14px;color:var(--ink);font-size:16px;caret-color:var(--green);
+  transition:border-color var(--t-fast) ease,box-shadow var(--t) var(--ease),background-color var(--t-fast) ease}
+.fg select{appearance:none;-webkit-appearance:none;padding-right:44px;cursor:pointer;
+  background:#1c1c1c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23b3b0aa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 16px center/12px no-repeat}
+.fg select:invalid{color:var(--muted)}
+.fg option{color:var(--ink);background:#1c1c1c}
+.fg input::placeholder,.fg textarea::placeholder{color:#7d7a75}
+.fg input:focus,.fg textarea:focus,.fg select:focus{outline:none;border-color:var(--green);background-color:#1f1f1f;box-shadow:0 0 0 4px rgba(77,255,124,.14)}
+.fg textarea{min-height:120px;resize:vertical;line-height:1.6}
+.submit-btn{width:100%;min-height:56px;margin-top:var(--s2);font-size:15.5px}
+.submit-btn:disabled{cursor:default;opacity:.75}
+.f-note{font-size:12.5px;color:var(--ink2);text-align:center;line-height:1.6}
+#formStatus{color:var(--muted)}
 
-    /* ── FOOTER ── */
-    footer {
-      background:var(--bg); border-top:1px solid var(--edge);
-      padding:clamp(40px,5vw,64px) clamp(20px,5vw,60px) 28px;
-    }
-    .foot-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:2rem; margin-bottom:clamp(32px,4vw,56px); }
-    .foot-brand { max-width:280px; }
-    .foot-brand p { font-size:13px; color:var(--muted); line-height:1.7; margin-top:12px; }
-    .foot-links { display:flex; gap:clamp(32px,5vw,72px); flex-wrap:wrap; }
-    .foot-col { display:flex; flex-direction:column; gap:10px; }
-    .foot-col h4 { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
-    .foot-col a { font-size:13.5px; color:var(--ink2); transition:color .2s; }
-    .foot-col a:hover { color:var(--ink); }
-    .foot-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:20px; border-top:1px solid var(--edge); font-size:12px; color:var(--muted); }
-    .foot-lic { font-size:11px; color:var(--edge2); letter-spacing:.06em; }
+/* ── Footer ── */
+footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-top:1px solid var(--edge);overflow:hidden}
+.foot-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s8);padding-bottom:var(--s8)}
+.foot-brand{max-width:300px}
+.foot-brand .nav-logo{font-size:18px}
+.foot-brand p{color:var(--ink2);font-size:14.5px;line-height:1.8;margin-top:var(--s5)}
+.foot-links{display:flex;gap:clamp(40px,6vw,96px)}
+.foot-col{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.foot-col h4{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:var(--s2);font-family:'Outfit',sans-serif}
+.foot-col a{font-size:14.5px;color:var(--ink2);line-height:1.5;transition:color var(--t-fast) ease,transform var(--t) var(--spring)}
+.foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s4);border-top:1px solid var(--edge);padding-top:var(--s5);color:var(--ink2);font-size:12.5px}
+.foot-demo{margin-top:var(--s3);font-size:11.5px;color:var(--muted);line-height:1.6;max-width:680px}
+.footer-wordmark{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(60px,14.2vw,226px);letter-spacing:-.06em;line-height:.9;padding-top:var(--s8);white-space:nowrap;user-select:none;
+  background:linear-gradient(180deg,var(--green) 30%,rgba(77,255,124,.35));-webkit-background-clip:text;background-clip:text;color:transparent}
 
-    /* ── WEBGL CTA CANVAS ── */
-    .cta-canvas-wrap { position:relative; width:100%; aspect-ratio:2.5/1; min-height:220px; border-radius:12px; overflow:hidden; margin-bottom:clamp(36px,5vw,60px); }
-    .cta-canvas-wrap canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
-    .cta-canvas-overlay { position:absolute; inset:0; background:linear-gradient(to right, rgba(12,12,12,.7) 30%, transparent 80%); }
-    .cta-canvas-text { position:absolute; bottom:clamp(16px,2.5vw,28px); left:clamp(16px,2.5vw,28px); }
-    .cta-canvas-text p { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--green); margin-bottom:.4rem; }
-    .cta-canvas-text h3 { font-size:clamp(18px,2.5vw,28px); font-weight:700; letter-spacing:-.02em; color:#fff; }
-    /* ── CHAT WIDGET: keep Voiceflow chat in light mode (site uses color-scheme:dark) ── */
-    #voiceflow-chat { color-scheme: light; }
-  </style>
+#voiceflow-chat{color-scheme:light}
+
+/* ── Hover (fine pointers only) ── */
+@media (hover:hover) and (pointer:fine){
+  .btn-green:hover,.nav-cta:hover,.submit-btn:not(:disabled):hover{background:var(--green-hi);transform:translateY(-2px);box-shadow:var(--glow)}
+  .btn-green:hover svg,.submit-btn:not(:disabled):hover .arr{transform:translateX(4px)}
+  .nav-cta:hover::after{transform:translate(2px,-2px)}
+  .btn-ghost:hover{border-color:var(--ink2);background:rgba(255,255,255,.05);transform:translateY(-2px)}
+  .nav-logo:hover .nav-mark{transform:rotate(-12deg) scale(1.05);box-shadow:0 0 0 6px rgba(77,255,124,.12)}
+  .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+  .link-underline:hover::after{opacity:1;animation:underline 600ms var(--ease) forwards}
+  .svc-card:hover{background:var(--light-hi)}
+  .svc-card:hover::before{transform:scaleX(1)}
+  .svc-card:hover .svc-arrow{background:var(--light-ink);border-color:var(--light-ink);color:var(--green);transform:rotate(45deg)}
+  .svc-card:hover .svc-num{color:var(--green-ink)}
+  .a-stat:hover{background:#101010}
+  .about-list li:hover{color:var(--ink);padding-left:4px}
+  .proc-card:hover .proc-num{background:var(--green);border-color:var(--green);color:var(--bg);transform:scale(1.08);box-shadow:0 0 0 8px rgba(77,255,124,.1)}
+  .r-btn:hover{background:var(--light-ink);border-color:var(--light-ink);color:var(--light);transform:scale(1.05)}
+  .fg input:hover:not(:focus),.fg textarea:hover:not(:focus),.fg select:hover:not(:focus){border-color:#575757}
+  .foot-col a:hover{color:var(--ink);transform:translateX(3px)}
+}
+@keyframes underline{0%{transform:scaleX(1);transform-origin:right}45%{transform:scaleX(0);transform-origin:right}46%{transform-origin:left}100%{transform:scaleX(1);transform-origin:left}}
+
+/* ── ≤1080 ── */
+@media (max-width:1080px){
+  .hero-art{right:-18%;opacity:.5;width:72vw}
+  .about-grid{grid-template-columns:1fr;gap:var(--s8)}
+  .about-grid>:first-child{order:2}
+  .cta-grid{gap:var(--s7)}
+  .foot-top{grid-template-columns:1fr;gap:var(--s7)}
+  .foot-links{justify-content:space-between}
+}
+
+/* ── ≤860 (tablet / mobile nav) ── */
+@media (max-width:860px){
+  :root{--nav-h:72px}
+  .nav{gap:var(--s3)}
+  .nav-logo{font-size:15px;gap:10px}
+  .nav-mark{width:32px;height:32px}
+  .nav-cta{margin-left:auto;min-height:44px;font-size:13px;padding:10px 16px}
+  .menu-toggle{position:relative;z-index:2;display:grid;place-content:center;gap:6px;width:44px;height:44px;border:1px solid var(--edge2);border-radius:var(--r-sm);transition:border-color var(--t-fast) ease,background-color var(--t-fast) ease}
+  .menu-toggle span{display:block;height:1.5px;width:18px;border-radius:2px;background:var(--ink);transition:transform var(--t) var(--ease)}
+  .menu-toggle[aria-expanded=true]{border-color:var(--ink2);background:rgba(255,255,255,.04)}
+  .menu-toggle[aria-expanded=true] span:first-child{transform:translateY(3.75px) rotate(45deg)}
+  .menu-toggle[aria-expanded=true] span:last-child{transform:translateY(-3.75px) rotate(-45deg)}
+  .nav.menu-active{background:var(--bg);border-bottom-color:var(--edge)}
+  .nav-links{position:fixed;top:var(--nav-h);left:0;right:0;height:calc(100dvh - var(--nav-h));margin:0;padding:var(--s5) var(--gutter) calc(var(--s7) + env(safe-area-inset-bottom));
+    flex-direction:column;align-items:stretch;gap:0;background:var(--bg);overflow-y:auto;
+    opacity:0;visibility:hidden;transition:opacity var(--t) var(--ease),visibility 0s linear var(--t)}
+  .nav-links.is-open{opacity:1;visibility:visible;transition:opacity var(--t) var(--ease),visibility 0s}
+  .nav-links li{border-bottom:1px solid var(--edge);opacity:0;transform:translateY(14px);transition:opacity 500ms var(--ease),transform 500ms var(--ease)}
+  .nav-links.is-open li{opacity:1;transform:none}
+  .nav-links.is-open li:nth-child(2){transition-delay:50ms}.nav-links.is-open li:nth-child(3){transition-delay:100ms}.nav-links.is-open li:nth-child(4){transition-delay:150ms}
+  .nav-links a{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-radius:0;font-family:'Sora',sans-serif;font-size:30px;font-weight:600;letter-spacing:-.04em;color:var(--ink)}
+  .nav-links a[aria-current]{background:none;color:var(--green)}
+  .nav-links .nl-arrow{display:block;font-size:20px;color:var(--green)}
+  .hero{padding-top:calc(var(--nav-h) + 56px);min-height:auto}
+  .hero h1{font-size:clamp(50px,10vw,80px)}
+  .hero-art{width:92vw;right:-34%;opacity:.3}
+  .hero-scroll{display:none}
+  /* trust bar becomes a marquee */
+  .trust-bar{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .trust-track{justify-content:flex-start;gap:40px;width:max-content;padding:20px 0;animation:marquee 32s linear infinite}
+  .trust-item.dup{display:flex}
+  .services-head,.process-head,.review-head{flex-direction:column;align-items:flex-start;gap:var(--s5)}
+  .services-head{margin-bottom:var(--s7)}
+  .cta-grid{grid-template-columns:1fr}
+  .cta-left{position:static}
+  .process-grid{grid-template-columns:1fr;gap:0;margin-top:var(--s7)}
+  .process-grid::before{left:23.5px;right:auto;top:24px;bottom:24px;width:1px;height:auto;background:var(--edge2)}
+  .proc-card{display:grid;grid-template-columns:48px 1fr;column-gap:var(--s5);padding-bottom:var(--s7)}
+  .proc-card:last-child{padding-bottom:0}
+  .proc-num{grid-row:1 / 3;margin:0}
+  .proc-card h3{padding-top:11px}
+  .review-quote{grid-template-columns:1fr;gap:var(--s6)}
+  .review-nav{justify-content:space-between}
+}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ── ≤560 (phones) ── */
+@media (max-width:560px){
+  body{font-size:15.5px}
+  .sec{padding-top:80px;padding-bottom:80px}
+  .sec-title{font-size:clamp(32px,9vw,40px)}
+  .sec-label{margin-bottom:var(--s4)}
+  .nav-cta::after{display:none}
+  .nav-cta{padding:10px 14px}
+  .hero{padding-top:calc(var(--nav-h) + 40px);padding-bottom:72px}
+  .hero-badge{font-size:11.5px;margin-bottom:var(--s5)}
+  .hero h1{font-size:clamp(44px,12.4vw,64px);line-height:1.02;margin-bottom:var(--s5)}
+  .hero-sub{font-size:16px;margin-bottom:var(--s6)}
+  .hero-actions{display:grid;grid-template-columns:1fr;gap:var(--s3)}
+  .hero-actions a{width:100%}
+  .hero-chat{font-size:12.5px}
+  .hero-art{width:130vw;right:-62%;top:24%;opacity:.22}
+  .services-grid{grid-template-columns:1fr;border-radius:var(--r-md)}
+  .svc-top{margin-bottom:var(--s6)}
+  .svc-arrow{width:38px;height:38px}
+  .svc-card p,.proc-card p{font-size:15.5px}
+  .about-stats{border-radius:var(--r-md)}
+  .a-stat{padding:22px 18px}
+  .a-stat-n{font-size:clamp(38px,11vw,48px)}
+  .a-stat-l{font-size:12.5px;margin-top:var(--s3)}
+  .about-right p{font-size:16px}
+  .about-list li{font-size:15px;align-items:flex-start}
+  .about-list li::before{margin-top:3px}
+  .about-cta .btn-green{width:100%}
+  .review-rating{padding:10px 18px 10px 14px}
+  .review-quote{padding:64px 22px 24px;border-radius:var(--r-md)}
+  .review-quote::before{left:20px;top:6px;font-size:96px}
+  .review-quote blockquote{font-size:19px;line-height:1.55}
+  .r-avatar{width:44px;height:44px}
+  .r-role{font-size:12.5px}
+  .cta-canvas-wrap{height:170px;margin-bottom:var(--s6)}
+  .cta-promise span{font-size:14.5px;align-items:flex-start}
+  .cta-promise span::before{margin-top:3px}
+  .quote-panel{padding:24px 18px;border-radius:var(--r-md)}
+  .f-row{grid-template-columns:1fr;gap:var(--s5)}
+  footer{padding-top:var(--s8)}
+  .foot-links{display:grid;grid-template-columns:1fr 1fr;gap:var(--s6) var(--s5)}
+  .foot-col:last-child{grid-column:1 / -1}
+  .foot-bottom{flex-direction:column;gap:var(--s2)}
+  .footer-wordmark{font-size:14.6vw;padding-top:var(--s7)}
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv{opacity:1;transform:none}
+  .trust-bar{-webkit-mask-image:none;mask-image:none}
+  .trust-track{flex-wrap:wrap;width:auto;gap:14px 28px;padding:20px var(--pad)}
+  .trust-item.dup{display:none!important}
+}
+</style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to content</a>
 
   <!-- ── NAV ── -->
-  <nav>
+  <nav class="nav" aria-label="Main navigation">
     <a href="#" class="nav-logo">
       <div class="nav-mark">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -299,33 +405,36 @@
       </div>
       Desert Peak
     </a>
-    <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#reviews">Reviews</a></li>
+    <ul class="nav-links" id="mainNav">
+      <li><a href="#services">Services<span class="nl-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="#about">About<span class="nl-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="#process">Process<span class="nl-arrow" aria-hidden="true">→</span></a></li>
+      <li><a href="#reviews">Reviews<span class="nl-arrow" aria-hidden="true">→</span></a></li>
     </ul>
     <a href="#contact" class="nav-cta" onclick="return openChat(event)">Free Quote</a>
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span></button>
   </nav>
+<main id="main">
 
   <!-- ── HERO ── -->
-  <section class="hero">
-    <div class="hero-badge rv in">Roofing &amp; HVAC · Phoenix, AZ · Est. 2012</div>
-    <h1 class="rv in d1">
-      Built For<br/>Arizona's<br/><em>Extremes.</em>
+  <section class="hero" aria-label="Desert Peak Roofing and HVAC">
+    <div class="hero-art" aria-hidden="true"><svg viewBox="0 0 680 680" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="ring"><circle cx="365" cy="310" r="258" stroke="currentColor" stroke-opacity=".14" stroke-dasharray="2 8"/></g><circle cx="365" cy="310" r="202" stroke="currentColor" stroke-opacity=".08"/><path d="M120 482 365 105 610 482H120Z" fill="currentColor" fill-opacity=".035" stroke="currentColor" stroke-opacity=".4"/><path d="m185 445 180-278 180 278H185Z" stroke="currentColor" stroke-opacity=".55"/><path d="m249 408 116-179 116 179H249Z" fill="currentColor" fill-opacity=".1" stroke="currentColor"/><path d="M365 105V576M73 482H657" stroke="currentColor" stroke-opacity=".12"/><path d="M120 503v14m490-14v14M120 510h490" stroke="currentColor" stroke-opacity=".35"/><circle cx="365" cy="105" r="5" fill="currentColor"/><circle cx="120" cy="482" r="4" fill="currentColor"/><circle cx="610" cy="482" r="4" fill="currentColor"/></svg></div>
+    <div class="hero-badge rise" style="--i:0">Roofing &amp; HVAC · Phoenix, AZ · Est. 2012</div>
+    <h1 class="rise" style="--i:1">
+      Built For Arizona's<br/><em>Extremes.</em>
     </h1>
-    <p class="hero-sub rv in d2">
+    <p class="hero-sub rise" style="--i:2">
       Desert Peak protects Phoenix homes from 115° summers, monsoon storms, and everything in between. Licensed, insured, and available 24/7 for emergencies.
     </p>
-    <div class="hero-actions rv in d3">
+    <div class="hero-actions rise" style="--i:3">
       <a href="#contact" class="btn-green" onclick="return openChat(event)">
         Get a Free Quote
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </a>
       <a href="tel:+16021234567" class="btn-ghost">(602) 123-4567</a>
     </div>
-    <p style="margin-top:1.1rem;font-size:12px;font-weight:600;color:var(--green);letter-spacing:.04em">💬 Chat with us — replies in seconds, 24/7</p>
-    <div class="hero-scroll rv in d5">
+    <p class="hero-chat rise" style="--i:4"><span class="live-dot" aria-hidden="true"></span>Chat with us — replies in seconds, 24/7</p>
+    <div class="hero-scroll rise" style="--i:6" aria-hidden="true">
       <div class="scroll-line"></div>
       <span>Scroll</span>
     </div>
@@ -333,46 +442,56 @@
 
   <!-- ── TRUST BAR ── -->
   <div class="trust-bar">
-    <div class="trust-item"><div class="trust-dot"></div>AZ Licensed &amp; Insured</div>
-    <div class="trust-item"><div class="trust-dot"></div>BBB Accredited A+</div>
-    <div class="trust-item"><div class="trust-dot"></div>500+ Roofs Installed</div>
-    <div class="trust-item"><div class="trust-dot"></div>24/7 Emergency Service</div>
-    <div class="trust-item"><div class="trust-dot"></div>Serving Phoenix Since 2012</div>
+    <div class="trust-track">
+      <div class="trust-item"><div class="trust-dot"></div>AZ Licensed &amp; Insured</div>
+      <div class="trust-item"><div class="trust-dot"></div>BBB Accredited A+</div>
+      <div class="trust-item"><div class="trust-dot"></div>500+ Roofs Installed</div>
+      <div class="trust-item"><div class="trust-dot"></div>24/7 Emergency Service</div>
+      <div class="trust-item"><div class="trust-dot"></div>Serving Phoenix Since 2012</div>
+    </div>
   </div>
 
   <!-- ── SERVICES (LIGHT BAND) ── -->
-  <section class="sec services-sec" id="services">
-    <div class="services-head rv">
+  <section class="sec services-sec light" id="services">
+    <div class="services-head">
       <div>
-        <div class="sec-label">What We Do</div>
-        <h2 class="sec-title">Every service your<br/>home depends on.</h2>
+        <div class="sec-label rv">What We Do</div>
+        <h2 class="sec-title rv d1">Every service your<br/>home depends on.</h2>
       </div>
-      <a href="#contact" class="services-head-link" onclick="return openChat(event)">
+      <a href="#contact" class="link-underline rv d2" onclick="return openChat(event)">
         Schedule a free inspection →
       </a>
     </div>
     <div class="services-grid">
       <div class="svc-card rv">
-        <div class="svc-num">01</div>
-        <div class="svc-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+        <div class="svc-top">
+          <div class="svc-num">01</div>
+          <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+        </div>
         <h3>Residential Roofing</h3>
         <p>Full replacements, repairs, and storm damage restoration. Tile, shingle, flat roof — all handled by our in-house crew with a 10-year workmanship warranty.</p>
       </div>
       <div class="svc-card rv d1">
-        <div class="svc-num">02</div>
-        <div class="svc-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+        <div class="svc-top">
+          <div class="svc-num">02</div>
+          <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+        </div>
         <h3>Commercial Roofing</h3>
         <p>Flat roofs, TPO, modified bitumen, and built-up systems for commercial properties. We minimize downtime and disruption during installation.</p>
       </div>
-      <div class="svc-card rv d2">
-        <div class="svc-num">03</div>
-        <div class="svc-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+      <div class="svc-card rv">
+        <div class="svc-top">
+          <div class="svc-num">03</div>
+          <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+        </div>
         <h3>HVAC Installation</h3>
         <p>New systems, replacements, and efficiency upgrades. We work with all major brands and help you choose the right unit for Arizona's climate and your energy goals.</p>
       </div>
-      <div class="svc-card rv d3">
-        <div class="svc-num">04</div>
-        <div class="svc-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+      <div class="svc-card rv d1">
+        <div class="svc-top">
+          <div class="svc-num">04</div>
+          <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
+        </div>
         <h3>HVAC Repair &amp; Emergency</h3>
         <p>When your AC goes out at 2am in July, we answer. 24/7 emergency response across the Phoenix metro. Same-day service for most repair calls.</p>
       </div>
@@ -386,36 +505,38 @@
         <div class="sec-label rv">By The Numbers</div>
         <div class="about-stats rv d1">
           <div class="a-stat">
-            <div class="a-stat-n"><span data-target="12" data-suffix="+">0</span></div>
+            <div class="a-stat-n"><span class="g" data-target="12" data-suffix="+">12+</span></div>
             <div class="a-stat-l">Years in Phoenix</div>
           </div>
           <div class="a-stat">
-            <div class="a-stat-n"><span data-target="500" data-suffix="+">0</span></div>
+            <div class="a-stat-n"><span class="g" data-target="500" data-suffix="+">500+</span></div>
             <div class="a-stat-l">Roofs Installed</div>
           </div>
           <div class="a-stat">
-            <div class="a-stat-n" style="font-size:clamp(28px,4vw,48px)">4.9<span style="font-size:.6em">★</span></div>
+            <div class="a-stat-n">4.9<span class="star">★</span></div>
             <div class="a-stat-l">Google Rating</div>
           </div>
           <div class="a-stat">
-            <div class="a-stat-n"><span>24</span><span style="font-size:.55em;color:var(--ink2)">/7</span></div>
+            <div class="a-stat-n"><span class="g">24</span><span class="unit">/7</span></div>
             <div class="a-stat-l">Emergency Service</div>
           </div>
         </div>
       </div>
-      <div class="about-right rv d2">
-        <div class="sec-label">Why Desert Peak</div>
-        <h2 class="sec-title">We work in<br/>Phoenix's heat<br/><em style="font-style:italic;color:var(--green)">every day.</em></h2>
-        <p>Most contractors avoid the summer. We built our business around it. Every crew member is trained for extreme heat environments, and every install is engineered for Arizona's brutal climate — not copied from a general contractor handbook.</p>
-        <ul class="about-list">
+      <div class="about-right">
+        <div class="sec-label rv">Why Desert Peak</div>
+        <h2 class="sec-title rv d1">We work in Phoenix's heat<br/><em>every day.</em></h2>
+        <p class="rv d2">Most contractors avoid the summer. We built our business around it. Every crew member is trained for extreme heat environments, and every install is engineered for Arizona's brutal climate — not copied from a general contractor handbook.</p>
+        <ul class="about-list rv d3">
           <li>In-house crews — no subcontractors, ever</li>
           <li>Manufacturer-certified for 10-year warranties</li>
           <li>Free post-monsoon roof inspections</li>
           <li>Transparent pricing — quotes within 24 hours</li>
           <li>Serving Phoenix, Scottsdale, Tempe, Mesa &amp; Gilbert</li>
         </ul>
-        <div class="about-cta">
-          <a href="#contact" class="btn-green" onclick="return openChat(event)">Get Your Free Quote</a>
+        <div class="about-cta rv d4">
+          <a href="#contact" class="btn-green" onclick="return openChat(event)">Get Your Free Quote
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -423,42 +544,48 @@
 
   <!-- ── PROCESS ── -->
   <section class="sec process-sec" id="process">
-    <div class="sec-label rv">How It Works</div>
-    <h2 class="sec-title rv d1">From inspection<br/>to installation.</h2>
-    <div class="process-grid">
-      <div class="proc-card rv">
+    <div class="process-head">
+      <div>
+        <div class="sec-label rv">How It Works</div>
+        <h2 class="sec-title rv d1">From inspection<br/>to installation.</h2>
+      </div>
+    </div>
+    <ol class="process-grid">
+      <li class="proc-card rv">
         <div class="proc-num">01</div>
         <h3>Free Inspection &amp; Quote</h3>
         <p>Book online or call us. We come to you — usually same or next day — assess the situation, and hand you a written quote before we leave. No pressure, no obligation.</p>
-      </div>
-      <div class="proc-card rv d2">
+      </li>
+      <li class="proc-card rv d2">
         <div class="proc-num">02</div>
         <h3>We Get Permitted &amp; Scheduled</h3>
         <p>We handle all permits and city paperwork. We'll confirm a start date that works for you, order materials, and prep everything so installation day runs clean.</p>
-      </div>
-      <div class="proc-card rv d4">
+      </li>
+      <li class="proc-card rv d4">
         <div class="proc-num">03</div>
         <h3>Installed. Inspected. Done.</h3>
         <p>Our crew installs, cleans up completely, and walks you through everything. Final city inspection included. We don't leave until you're satisfied — and your warranty is in writing.</p>
-      </div>
-    </div>
+      </li>
+    </ol>
   </section>
 
   <!-- ── REVIEWS ── -->
-  <section class="sec reviews-sec" id="reviews">
+  <section class="sec reviews-sec light" id="reviews">
     <div class="review-head">
       <div>
         <div class="sec-label rv">Customer Reviews</div>
         <h2 class="sec-title rv d1">Phoenix homeowners<br/>trust Desert Peak.</h2>
       </div>
       <div class="review-rating rv d2">
-        <b>4.9<span style="color:var(--green)">★</span></b>
+        <b>4.9<span>★</span></b>
         <small>300+ Google Reviews</small>
       </div>
     </div>
     <div class="review-quote rv d2">
-      <blockquote id="reviewText">"Desert Peak replaced our entire roof after the August monsoon. They were here within 48 hours of my call, gave us a written quote on the spot, and finished the job in two days. Immaculate cleanup. Best contractor experience I've had in 15 years of owning a home in Arizona."</blockquote>
-      <div class="review-by">
+      <div class="rq-stack" id="rqStack">
+        <blockquote id="reviewText">"Desert Peak replaced our entire roof after the August monsoon. They were here within 48 hours of my call, gave us a written quote on the spot, and finished the job in two days. Immaculate cleanup. Best contractor experience I've had in 15 years of owning a home in Arizona."</blockquote>
+      </div>
+      <div class="review-by" id="reviewBy">
         <div class="r-avatar" id="reviewAvatar">TM</div>
         <div>
           <div class="r-name" id="reviewName">Tom M.</div>
@@ -466,11 +593,11 @@
         </div>
       </div>
       <div class="review-nav">
-        <button class="r-btn" onclick="prevReview()" aria-label="Previous">
+        <button class="r-btn" type="button" onclick="prevReview()" aria-label="Previous review">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L6 8l4 5"/></svg>
         </button>
         <div class="r-dots" id="rDots"></div>
-        <button class="r-btn" onclick="nextReview()" aria-label="Next">
+        <button class="r-btn" type="button" onclick="nextReview()" aria-label="Next review">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l4 5-4 5"/></svg>
         </button>
       </div>
@@ -480,9 +607,9 @@
   <!-- ── CTA / CONTACT ── -->
   <section class="sec cta-sec" id="contact">
     <div class="cta-grid">
-      <div class="cta-left rv">
+      <div class="cta-left">
         <!-- WebGL landscape canvas -->
-        <div class="cta-canvas-wrap">
+        <div class="cta-canvas-wrap rv">
           <canvas id="ctaCanvas"></canvas>
           <div class="cta-canvas-overlay"></div>
           <div class="cta-canvas-text">
@@ -490,29 +617,28 @@
             <h3>Protecting Arizona Homes</h3>
           </div>
         </div>
-        <div class="sec-label">Get In Touch</div>
-        <h2 class="sec-title">Ready to protect<br/>your home?</h2>
-        <p class="sec-sub">Fill out the form and you'll get an instant confirmation and a call from our team to schedule your free inspection. Same-day appointments often available.</p>
-        <div class="cta-promise">
+        <div class="sec-label rv d1">Get In Touch</div>
+        <h2 class="sec-title rv d1">Ready to protect<br/>your home?</h2>
+        <p class="sec-sub rv d2">Fill out the form and you'll get an instant confirmation and a call from our team to schedule your free inspection. Same-day appointments often available.</p>
+        <div class="cta-promise rv d3">
           <span>Free inspection — no commitment required</span>
           <span>Written quote before we leave your property</span>
           <span>Licensed, bonded &amp; insured in Arizona</span>
           <span>Financing available for qualified homeowners</span>
         </div>
       </div>
-      <div class="rv d2">
-        <div class="urgency"><div class="u-dot"></div>Slots filling fast — monsoon season</div>
-        <form class="cta-form" id="quoteForm">
+      <div class="quote-panel rv d2">
+        <div class="urgency"><span class="live-dot" aria-hidden="true"></span>Slots filling fast — monsoon season</div>
+        <form class="cta-form" id="quoteForm" aria-label="Request a free quote">
           <div class="f-row">
-            <div class="fg"><label>First Name</label><input type="text" placeholder="John" required/></div>
-            <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith" required/></div>
+            <div class="fg"><label for="field-1">First Name</label><input id="field-1" name="field-1" type="text" placeholder="John" autocomplete="given-name" required/></div>
+            <div class="fg"><label for="field-2">Last Name</label><input id="field-2" name="field-2" type="text" placeholder="Smith" autocomplete="family-name" required/></div>
           </div>
           <div class="f-row">
-            <div class="fg"><label>Phone</label><input type="tel" placeholder="(602) 000-0000" required/></div>
-            <div class="fg"><label>Email</label><input type="email" placeholder="john@email.com" required/></div>
+            <div class="fg"><label for="field-3">Phone</label><input id="field-3" name="field-3" type="tel" placeholder="(602) 000-0000" autocomplete="tel" required/></div>
+            <div class="fg"><label for="field-4">Email</label><input id="field-4" name="field-4" type="email" placeholder="john@email.com" autocomplete="email" required/></div>
           </div>
-          <div class="fg"><label>Service Needed</label>
-            <select required>
+          <div class="fg"><label for="field-5">Service Needed</label><select id="field-5" name="field-5" required>
               <option value="" disabled selected>Select a service...</option>
               <option>Residential Roofing — Replacement</option>
               <option>Residential Roofing — Repair</option>
@@ -523,22 +649,24 @@
               <option>Free Inspection (Not Sure)</option>
             </select>
           </div>
-          <div class="fg"><label>Address</label><input type="text" placeholder="123 Desert View Dr, Phoenix, AZ" required/></div>
-          <div class="fg"><label>Additional Details (optional)</label><textarea placeholder="Describe the issue, square footage, age of system, anything helpful..."></textarea></div>
-          <button type="submit" class="submit-btn">Request My Free Quote →</button>
+          <div class="fg"><label for="field-6">Address</label><input id="field-6" name="field-6" type="text" placeholder="123 Desert View Dr, Phoenix, AZ" autocomplete="street-address" required/></div>
+          <div class="fg"><label for="field-7">Additional Details (optional)</label><textarea id="field-7" name="field-7" placeholder="Describe the issue, square footage, age of system, anything helpful..."></textarea></div>
+          <button type="submit" class="submit-btn">Request My Free Quote <span class="arr" aria-hidden="true">→</span></button>
           <p class="f-note">Instant confirmation · Mon–Sat 6am–8pm · Emergency line 24/7</p>
+          <p class="f-note" id="formStatus" role="status">Demo form — details are not sent. Use the chat to explore the lead-capture demo.</p>
         </form>
       </div>
     </div>
   </section>
 
+</main>
   <!-- ── FOOTER ── -->
   <footer>
     <div class="foot-top">
       <div class="foot-brand">
-        <a href="#" class="nav-logo" style="font-size:12px">
-          <div class="nav-mark" style="width:26px;height:26px">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 12H2L8 2Z" fill="#0c0c0c"/></svg>
+        <a href="#" class="nav-logo">
+          <div class="nav-mark">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 12H2L8 2Z" fill="#0c0c0c"/></svg>
           </div>
           Desert Peak
         </a>
@@ -572,7 +700,8 @@
       <span>© 2026 Desert Peak Roofing &amp; HVAC. Phoenix, AZ.</span>
       <span class="foot-lic">AZ ROC #123456 · HVAC Lic. #654321 · BBB A+</span>
     </div>
-    <p style="margin-top:14px;font-size:11px;color:var(--muted);line-height:1.6;max-width:680px">Demo website — Desert Peak is a fictional company created to showcase an AI lead-capture system. Reviews, ratings and license numbers are illustrative.</p>
+    <p class="foot-demo">Demo website — Desert Peak is a fictional company created to showcase an AI lead-capture system. Reviews, ratings and license numbers are illustrative.</p>
+    <div class="footer-wordmark" aria-hidden="true">Desert Peak.</div>
   </footer>
 
   <script>
@@ -659,50 +788,55 @@
   }
 
   // Ember preset (warm desert sunset) for the CTA banner
-  const EMBER=['#2a1519','#7a3036','#c23a2a','#ff6a2c','#070505'].flatMap(hexRgb);
+  const EMBER=['#0c0c0c','#14281b','#286b3e','#4dff7c','#070d09'].flatMap(hexRgb);
 
   window.addEventListener('load',()=>{
     const cv=document.getElementById('ctaCanvas');
     if(!cv)return;
-    let gT=0;
-    function syncCv(){
-      const r=cv.parentElement.getBoundingClientRect(),d=window.devicePixelRatio||1;
-      cv.width=Math.round(r.width*d)||2;cv.height=Math.round(r.height*d)||2;
-    }
+    let gT=0,frame=null,visible=false;
+    const motion=matchMedia('(prefers-reduced-motion: reduce)');
+    function syncCv(){const r=cv.parentElement.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(r.width*d)||2;cv.height=Math.round(r.height*d)||2;paint();}
+    function paint(){doPaint(cv,{t:gT,s:2.8,a:0.12,p:[0,0],c:EMBER});}
+    function loop(){frame=null;if(!visible||document.hidden||motion.matches)return;gT+=.016;paint();frame=requestAnimationFrame(loop);}
+    function update(){if(frame!==null)cancelAnimationFrame(frame);frame=null;if(visible&&!document.hidden&&!motion.matches)loop();else paint();}
     syncCv();window.addEventListener('resize',syncCv);
-    function loop(){
-      gT+=0.016;
-      doPaint(cv,{t:gT,s:2.8,a:0.12,p:[0,0],c:EMBER});
-      requestAnimationFrame(loop);
-    }
-    loop();
+    new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;update();}).observe(cv);
+    document.addEventListener('visibilitychange',update);motion.addEventListener('change',update);
   });
 
-  /* ── SCROLL REVEAL ── */
-  const io=new IntersectionObserver(es=>{
-    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
-  },{threshold:0.1});
-  document.querySelectorAll('.rv:not(.in)').forEach(el=>io.observe(el));
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* ── COUNT-UP ── */
-  function easeOut(t){return 1-Math.pow(1-Math.min(t,1),3);}
-  const sio=new IntersectionObserver(es=>{
-    es.forEach(e=>{
-      if(!e.isIntersecting)return;
-      e.target.querySelectorAll('[data-target]').forEach(el=>{
-        const tgt=+el.dataset.target,sfx=el.dataset.suffix||'';
-        const t0=performance.now();
-        const tick=n=>{
-          const v=Math.floor(easeOut((n-t0)/1600)*tgt);
-          el.textContent=v.toLocaleString()+sfx;
-          if(n-t0<1600)requestAnimationFrame(tick);
-          else el.textContent=tgt.toLocaleString()+sfx;
-        };requestAnimationFrame(tick);
-      });sio.unobserve(e.target);
-    });
-  },{threshold:0.3});
-  const aStats=document.querySelector('.about-stats');
-  if(aStats)sio.observe(aStats);
+  /* ── SCROLL REVEAL ── */
+  const revealEls=document.querySelectorAll('.rv');
+  if(reduceMotion.matches||!('IntersectionObserver' in window)){revealEls.forEach(el=>el.classList.add('in'));}
+  else{
+    const rvObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rvObs.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    revealEls.forEach(el=>rvObs.observe(el));
+  }
+
+  /* ── STAT COUNT-UP ── */
+  const statEls=document.querySelectorAll('[data-target]');
+  const fmt=(el,n)=>el.textContent=Math.round(n).toLocaleString()+(el.dataset.suffix||'');
+  statEls.forEach(el=>fmt(el,Number(el.dataset.target)));
+  if(!reduceMotion.matches&&'IntersectionObserver' in window){
+    const countObs=new IntersectionObserver(entries=>{entries.forEach(e=>{
+      if(!e.isIntersecting)return;countObs.unobserve(e.target);
+      const el=e.target,end=Number(el.dataset.target),t0=performance.now(),dur=1400;
+      (function tick(t){const k=Math.min((t-t0)/dur,1),ease=1-Math.pow(1-k,4);fmt(el,end*ease);if(k<1)requestAnimationFrame(tick);})(t0);
+    });},{threshold:.6});
+    statEls.forEach(el=>countObs.observe(el));
+  }
+
+  /* ── NAV: frosted on scroll ── */
+  const nav=document.querySelector('.nav');
+  let navTick=false;
+  function syncNav(){nav.classList.toggle('scrolled',window.scrollY>8);navTick=false;}
+  window.addEventListener('scroll',()=>{if(!navTick){navTick=true;requestAnimationFrame(syncNav);}},{passive:true});
+  syncNav();
+
+  /* ── TRUST BAR: duplicate items for seamless mobile marquee ── */
+  const track=document.querySelector('.trust-track');
+  [...track.children].forEach(item=>{const c=item.cloneNode(true);c.classList.add('dup');c.setAttribute('aria-hidden','true');track.appendChild(c);});
 
   /* ── REVIEWS CAROUSEL ── */
   const REVIEWS=[
@@ -713,37 +847,74 @@
     {text:'"Three quotes. Desert Peak was not the cheapest — but they were the only ones who showed up with a crew that actually knew what they were doing. Roof has been perfect through two monsoon seasons. Zero issues."',
      name:'Rick & Maria V.',role:'Homeowners · Tempe, AZ · Tile Roof Replacement',init:'RV'},
   ];
-  let rIdx=0;
+  const reviewText=document.getElementById('reviewText');
+  const originalQuote=reviewText.textContent;
+  if(REVIEWS[0].text!==originalQuote)REVIEWS.unshift({...REVIEWS[0],text:originalQuote});
+  let rIdx=0,rBusy=false;
+
+  // Invisible copies of every quote share one grid cell, so the card is always as tall as the longest review (no layout jump).
+  const rqStack=document.getElementById('rqStack');
+  REVIEWS.forEach(r=>{const g=document.createElement('blockquote');g.className='rq-ghost';g.setAttribute('aria-hidden','true');g.textContent=r.text;rqStack.appendChild(g);});
 
   function buildRDots(){
-    const el=document.getElementById('rDots');if(!el)return;
-    el.innerHTML='';
-    REVIEWS.forEach((_,i)=>{
-      const b=document.createElement('button');b.className='r-dot'+(i===rIdx?' on':'');
-      b.onclick=()=>setReview(i);el.appendChild(b);
-    });
+    const el=document.getElementById('rDots');
+    REVIEWS.forEach((_,i)=>{const b=document.createElement('button');b.type='button';b.className='r-dot';b.setAttribute('aria-label','Show review '+(i+1));b.onclick=()=>setReview(i);el.appendChild(b);});
+    updateDots();
+  }
+  function updateDots(){document.querySelectorAll('.r-dot').forEach((b,i)=>{b.classList.toggle('on',i===rIdx);b.setAttribute('aria-pressed',String(i===rIdx));});}
+  function applyReview(){
+    const r=REVIEWS[rIdx];
+    reviewText.textContent=r.text;
+    document.getElementById('reviewAvatar').textContent=r.init;
+    document.getElementById('reviewName').textContent=r.name;
+    document.getElementById('reviewRole').textContent=r.role;
+    updateDots();
   }
   function setReview(i){
-    rIdx=((i%REVIEWS.length)+REVIEWS.length)%REVIEWS.length;
-    const r=REVIEWS[rIdx];
-    const qt=document.getElementById('reviewText');
-    if(qt){qt.style.opacity='0';setTimeout(()=>{qt.textContent=r.text;qt.style.opacity='1'},200);}
-    const av=document.getElementById('reviewAvatar');if(av)av.textContent=r.init;
-    const nm=document.getElementById('reviewName');if(nm)nm.textContent=r.name;
-    const rl=document.getElementById('reviewRole');if(rl)rl.textContent=r.role;
-    buildRDots();
+    const next=(i%REVIEWS.length+REVIEWS.length)%REVIEWS.length;
+    if(next===rIdx||rBusy)return;
+    rIdx=next;
+    if(reduceMotion.matches||!reviewText.animate){applyReview();return;}
+    rBusy=true;
+    const parts=[reviewText,document.getElementById('reviewBy')];
+    const out=parts.map(el=>el.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-8px)'}],{duration:200,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'}));
+    out[0].finished.then(()=>{
+      applyReview();
+      parts.forEach((el,k)=>{el.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:520,delay:k*60,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'});});
+      out.forEach(a=>a.cancel());
+      rBusy=false;
+    });
   }
   function nextReview(){setReview(rIdx+1);}
   function prevReview(){setReview(rIdx-1);}
   buildRDots();
-  setInterval(()=>setReview(rIdx+1),7000);
+  reviewText.setAttribute('aria-live','polite');
+
+  /* ── MOBILE MENU ── */
+  const menuButton=document.querySelector('.menu-toggle'),menu=document.getElementById('mainNav');
+  function setMenu(open){
+    menu.classList.toggle('is-open',open);
+    nav.classList.toggle('menu-active',open);
+    document.documentElement.classList.toggle('menu-open',open);
+    menuButton.setAttribute('aria-expanded',String(open));
+    menuButton.setAttribute('aria-label',open?'Close menu':'Open menu');
+  }
+  function closeMenu(){setMenu(false);}
+  menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')!=='true';setMenu(open);if(open)setTimeout(()=>menu.querySelector('a').focus(),60);});
+  menu.addEventListener('click',e=>{const link=e.target.closest('a');if(link){closeMenu();const target=document.querySelector(link.hash);if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuButton.getAttribute('aria-expanded')==='true'){closeMenu();menuButton.focus();}});
+  document.addEventListener('click',e=>{if(!e.target.closest('nav'))closeMenu();});
+  matchMedia('(min-width:861px)').addEventListener('change',closeMenu);
+  const sectionObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){document.querySelectorAll('.nav-links a').forEach(a=>{if(a.hash==='#'+entry.target.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}});},{rootMargin:'-15% 0px -55% 0px'});
+  document.querySelectorAll('main section[id]').forEach(s=>sectionObserver.observe(s));
 
   /* ── FORM ── */
   document.getElementById('quoteForm')?.addEventListener('submit',e=>{
     e.preventDefault();
     const b=e.target.querySelector('.submit-btn');
     b.textContent="Request Received — We'll Be In Touch Shortly.";
-    b.disabled=true;b.style.opacity='.7';
+    b.disabled=true;
+    document.getElementById('formStatus').textContent='Demo complete — your entries were validated, but no request was sent. Use the chat to explore the lead-capture demo.';
   });
   </script>
   <script>
@@ -754,10 +925,10 @@
   <script>
     function openChat(e) {
       if (e) e.preventDefault();
-      if (window.voiceflow && window.voiceflow.chat) {
+      if (window.voiceflow && window.voiceflow.chat && typeof window.voiceflow.chat.open === 'function') {
         window.voiceflow.chat.open();
       } else {
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('contact').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       }
       return false;
     }
