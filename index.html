@@ -934,6 +934,42 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
     }
   </script>
   <script type="text/javascript">
+    /* Show the Calendly booking page INSIDE the chat instead of a link that opens a new page.
+       When the agent sends a calendly.com link, this swaps it for the real calendar. */
+    function findCalendlyLink(trace) {
+      var p = (trace && trace.payload) || {};
+      var text = typeof p.message === 'string' ? p.message : '';
+      if (!text && p.slate) { try { text = JSON.stringify(p.slate); } catch (e) {} }
+      var m = text.match(/https:\/\/calendly\.com\/[^\s"'<>\)\]]+/);
+      return m ? m[0].replace(/&amp;/g, '&') : null;
+    }
+    var CalendlyExtension = {
+      name: 'CalendlyInChat',
+      type: 'response',
+      match: function (ctx) { return ctx.trace.type === 'text' && !!findCalendlyLink(ctx.trace); },
+      render: function (ctx) {
+        var url = new URL(findCalendlyLink(ctx.trace));
+        url.searchParams.set('embed_domain', location.hostname);
+        url.searchParams.set('embed_type', 'Inline');
+        url.searchParams.set('hide_gdpr_banner', '1');
+        var box = document.createElement('div');
+        box.style.cssText = 'width:100%;min-width:260px;border-radius:12px;overflow:hidden;background:#fff';
+        var frame = document.createElement('iframe');
+        frame.src = url.toString();
+        frame.title = 'Pick a time';
+        frame.style.cssText = 'width:100%;height:620px;border:0;display:block';
+        box.appendChild(frame);
+        ctx.element.appendChild(box);
+        /* When the person finishes booking, show a short "you're booked" note */
+        window.addEventListener('message', function onBooked(e) {
+          if (e.origin.indexOf('calendly.com') === -1 || !e.data || e.data.event !== 'calendly.event_scheduled') return;
+          window.removeEventListener('message', onBooked);
+          box.innerHTML = '<div style="padding:14px 16px;font:15px/1.4 system-ui,sans-serif;color:#1a1a1a">✅ <b>You\'re booked!</b> Check your email for the confirmation.</div>';
+        });
+      }
+    };
+  </script>
+  <script type="text/javascript">
     (function(d, t) {
         var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
         v.onload = function() {
@@ -942,7 +978,8 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
             url: 'https://general-runtime.voiceflow.com',
             voice: {
               url: 'https://runtime-api.voiceflow.com'
-            }
+            },
+            assistant: { extensions: [CalendlyExtension] }
           });
         }
         v.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs'; v.type = 'text/javascript'; s.parentNode.insertBefore(v, s);
