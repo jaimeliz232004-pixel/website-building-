@@ -52,6 +52,7 @@ button{border:0;background:none;color:inherit;cursor:pointer}
 button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
 button,a{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:2px}
+.hero-demo:focus-visible{border-radius:28px}
 img,svg{max-width:100%}img{display:block}
 h1,h2,h3,h4{font-family:'Sora',sans-serif;text-wrap:balance}
 p{text-wrap:pretty}
@@ -117,15 +118,12 @@ a:active,button:not(:disabled):active{transform:scale(.97)}
 .hero-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(77,255,124,.15)}
 .hero h1{max-width:11.5ch;font-size:clamp(56px,7.8vw,116px);font-weight:600;line-height:1;letter-spacing:-.05em;margin-bottom:var(--s6)}
 .hero h1 em{color:var(--green);font-style:normal}
-.hero-sub{max-width:46ch;font-size:clamp(16px,1.25vw,18.5px);line-height:1.75;color:var(--ink2);margin-bottom:var(--s6)}
+.hero-sub{max-width:40ch;font-size:clamp(17px,1.35vw,20px);line-height:1.6;color:#dedbd5;margin-bottom:var(--s6)}
 .hero-actions{display:flex;gap:var(--s3);flex-wrap:wrap}
 .hero-chat{display:inline-flex;align-items:center;gap:10px;margin-top:var(--s5);font-size:13px;font-weight:500;color:var(--green);letter-spacing:.02em}
 .live-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
 .live-dot::after{content:'';position:absolute;inset:0;border-radius:50%;background:var(--green);animation:ping 2.2s var(--ease) infinite}
 @keyframes ping{0%{transform:scale(1);opacity:.6}80%,100%{transform:scale(2.8);opacity:0}}
-.hero-art{position:absolute;z-index:-1;width:min(54vw,800px);aspect-ratio:1;right:-6%;top:50%;translate:0 -46%;color:var(--green);opacity:.85;pointer-events:none}
-.hero-art svg{width:100%;height:100%;animation:float 9s ease-in-out infinite}
-.hero-art .ring{transform-origin:365px 310px;animation:spin 80s linear infinite}
 @keyframes float{50%{transform:translateY(-14px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .hero-scroll{position:absolute;right:var(--pad);bottom:44px;display:flex;gap:14px;align-items:center;color:var(--ink2);font-size:11px;text-transform:uppercase;letter-spacing:.2em}
@@ -221,24 +219,53 @@ a:active,button:not(:disabled):active{transform:scale(.97)}
 .cta-canvas-text h3{font-size:22px;font-weight:500;letter-spacing:-.03em}
 .quote-panel{position:relative;padding:clamp(24px,3.4vw,44px);border:1px solid var(--edge);border-radius:var(--r-lg);background:linear-gradient(180deg,var(--surface2),var(--surface));box-shadow:var(--lift-dark)}
 .quote-panel::before{content:'';position:absolute;top:-1px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(77,255,124,.7),transparent)}
-.urgency{display:flex;align-items:center;gap:10px;color:var(--ink2);font-size:13px;padding-bottom:var(--s5);margin-bottom:var(--s6);border-bottom:1px solid var(--edge)}
-.cta-form{display:grid;gap:var(--s5)}
-.f-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
-.fg{display:grid;gap:var(--s2)}
-.fg label{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:.01em}
-.fg input,.fg textarea,.fg select{width:100%;min-width:0;min-height:52px;border:1px solid var(--edge2);background:#1c1c1c;border-radius:var(--r-sm);padding:13px 14px;color:var(--ink);font-size:16px;caret-color:var(--green);
-  transition:border-color var(--t-fast) ease,box-shadow var(--t) var(--ease),background-color var(--t-fast) ease}
-.fg select{appearance:none;-webkit-appearance:none;padding-right:44px;cursor:pointer;
-  background:#1c1c1c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23b3b0aa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 16px center/12px no-repeat}
-.fg select:invalid{color:var(--muted)}
-.fg option{color:var(--ink);background:#1c1c1c}
-.fg input::placeholder,.fg textarea::placeholder{color:#7d7a75}
-.fg input:focus,.fg textarea:focus,.fg select:focus{outline:none;border-color:var(--green);background-color:#1f1f1f;box-shadow:0 0 0 4px rgba(77,255,124,.14)}
-.fg textarea{min-height:120px;resize:vertical;line-height:1.6}
-.submit-btn{width:100%;min-height:56px;margin-top:var(--s2);font-size:15.5px}
-.submit-btn:disabled{cursor:default;opacity:.75}
 .f-note{font-size:12.5px;color:var(--ink2);text-align:center;line-height:1.6}
-#formStatus{color:var(--muted)}
+
+/* ── Hero chat demo ── */
+.hero-copy{display:flex;flex-direction:column;min-width:0}
+.hero-demo{position:relative;width:100%;max-width:400px;justify-self:end;cursor:pointer;border-radius:28px}
+.demo-card{border-radius:26px;background:linear-gradient(180deg,#171717,#101010);border:1px solid #2a2a2a;overflow:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 50px 100px -40px rgba(0,0,0,.95),0 40px 90px -50px rgba(77,255,124,.45);
+  transition:transform 600ms var(--ease),box-shadow 600ms var(--ease)}
+.demo-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #222;background:rgba(255,255,255,.02)}
+.demo-mark{width:34px;height:34px;flex-shrink:0;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.demo-head b{display:block;font-family:'Sora',sans-serif;font-size:14.5px;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.demo-head small{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2);line-height:1.4}
+.demo-head .live-dot{width:6px;height:6px}
+.demo-body{display:flex;flex-direction:column;gap:10px;padding:18px}
+.demo-body>*{animation:msgIn 700ms var(--ease) both}
+.demo-body>:nth-child(1){animation-delay:.9s}.demo-body>:nth-child(2){animation-delay:1.5s}.demo-body>:nth-child(3){animation-delay:2.2s}
+.demo-body>:nth-child(4){animation-delay:2.9s}.demo-body>:nth-child(5){animation-delay:3.5s}.demo-body>:nth-child(6){animation-delay:4.4s}
+@keyframes msgIn{from{opacity:0;transform:translateY(12px) scale(.98)}}
+.msg{max-width:86%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.45}
+.msg.bot{align-self:flex-start;background:#212121;color:var(--ink);border-bottom-left-radius:6px}
+.msg.me{align-self:flex-end;background:var(--green);color:var(--bg);font-weight:500;border-bottom-right-radius:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:12.5px;line-height:1.3;padding:7px 11px;border-radius:999px;border:1px solid #333;color:var(--ink2)}
+.chips .on{border-color:var(--green);color:var(--green);background:rgba(77,255,124,.08)}
+.slots{padding:14px;border-radius:18px;background:var(--light);color:var(--light-ink)}
+.slots-day{margin-bottom:10px;font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+.slots-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.slots-row span{padding:9px 0;text-align:center;font-size:12.5px;font-weight:500;border-radius:10px;border:1px solid var(--light-edge)}
+.slots-row .on{background:var(--light-ink);border-color:var(--light-ink);color:var(--green)}
+.booked{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:rgba(77,255,124,.08);border:1px solid rgba(77,255,124,.25)}
+.tick{width:30px;height:30px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:var(--green);color:var(--bg);font-weight:700;font-size:15px}
+.booked b{display:block;font-size:14px;line-height:1.3}.booked small{font-size:12px;color:var(--ink2)}
+.demo-cap{margin-top:16px;text-align:center;font-size:13px;color:var(--ink2)}
+@media (min-width:1081px){
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,400px);column-gap:clamp(48px,6vw,104px);align-items:center;align-content:center}
+  .hero h1{font-size:clamp(56px,5.4vw,92px)}
+}
+
+/* ── Contact chat card ── */
+.cp-status{display:flex;align-items:center;gap:10px;color:var(--ink2);font-size:13px;padding-bottom:var(--s5);margin-bottom:var(--s6);border-bottom:1px solid var(--edge)}
+.cp-title{font-size:clamp(30px,3vw,42px);line-height:1.08;font-weight:600;letter-spacing:-.04em}
+.cp-steps{list-style:none;display:grid;gap:var(--s4);margin:var(--s6) 0 var(--s7)}
+.cp-steps li{display:flex;align-items:center;gap:var(--s4);font-size:16.5px;color:var(--ink)}
+.cp-steps span{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--edge2);color:var(--green);font-family:'Sora',sans-serif;font-size:13px;font-weight:600}
+.cp-btn{width:100%;min-height:56px;font-size:15.5px}
+.cp-note{margin-top:var(--s4);text-align:center;font-size:13px;color:var(--ink2)}
+.cp-note a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--edge2)}
 
 /* ── Footer ── */
 footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-top:1px solid var(--edge);overflow:hidden}
@@ -274,17 +301,17 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
   .about-list li:hover{color:var(--ink);padding-left:4px}
   .proc-card:hover .proc-num{background:var(--green);border-color:var(--green);color:var(--bg);transform:scale(1.08);box-shadow:0 0 0 8px rgba(77,255,124,.1)}
   .r-btn:hover{background:var(--light-ink);border-color:var(--light-ink);color:var(--light);transform:scale(1.05)}
-  .fg input:hover:not(:focus),.fg textarea:hover:not(:focus),.fg select:hover:not(:focus){border-color:#575757}
   .foot-col a:hover{color:var(--ink);transform:translateX(3px)}
+  .hero-demo:hover .demo-card{transform:translateY(-6px);box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 60px 110px -40px rgba(0,0,0,.95),0 50px 110px -50px rgba(77,255,124,.6)}
 }
 @keyframes underline{0%{transform:scaleX(1);transform-origin:right}45%{transform:scaleX(0);transform-origin:right}46%{transform-origin:left}100%{transform:scaleX(1);transform-origin:left}}
 
 /* ── ≤1080 ── */
 @media (max-width:1080px){
-  .hero-art{right:-18%;opacity:.5;width:72vw}
-  .about-grid{grid-template-columns:1fr;gap:var(--s8)}
+    .about-grid{grid-template-columns:1fr;gap:var(--s8)}
   .about-grid>:first-child{order:2}
   .cta-grid{gap:var(--s7)}
+  .hero-demo{justify-self:start;margin-top:var(--s8);max-width:420px}
   .foot-top{grid-template-columns:1fr;gap:var(--s7)}
   .foot-links{justify-content:space-between}
 }
@@ -314,8 +341,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
   .nav-links .nl-arrow{display:block;font-size:20px;color:var(--green)}
   .hero{padding-top:calc(var(--nav-h) + 56px);min-height:auto}
   .hero h1{font-size:clamp(50px,10vw,80px)}
-  .hero-art{width:92vw;right:-34%;opacity:.3}
-  .hero-scroll{display:none}
+    .hero-scroll{display:none}
   /* trust bar becomes a marquee */
   .trust-bar{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
   .trust-track{justify-content:flex-start;gap:40px;width:max-content;padding:20px 0;animation:marquee 32s linear infinite}
@@ -350,8 +376,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
   .hero-actions{display:grid;grid-template-columns:1fr;gap:var(--s3)}
   .hero-actions a{width:100%}
   .hero-chat{font-size:12.5px}
-  .hero-art{width:130vw;right:-62%;top:24%;opacity:.22}
-  .services-grid{grid-template-columns:1fr;border-radius:var(--r-md)}
+    .services-grid{grid-template-columns:1fr;border-radius:var(--r-md)}
   .svc-top{margin-bottom:var(--s6)}
   .svc-arrow{width:38px;height:38px}
   .svc-card p,.proc-card p{font-size:15.5px}
@@ -373,7 +398,9 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
   .cta-promise span{font-size:14.5px;align-items:flex-start}
   .cta-promise span::before{margin-top:3px}
   .quote-panel{padding:24px 18px;border-radius:var(--r-md)}
-  .f-row{grid-template-columns:1fr;gap:var(--s5)}
+  .hero-demo{max-width:none;margin-top:var(--s7)}
+  .demo-body{padding:16px}
+  .cp-steps li{font-size:15.5px}
   footer{padding-top:var(--s8)}
   .foot-links{display:grid;grid-template-columns:1fr 1fr;gap:var(--s6) var(--s5)}
   .foot-col:last-child{grid-column:1 / -1}
@@ -411,29 +438,47 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
       <li><a href="#process">Process<span class="nl-arrow" aria-hidden="true">→</span></a></li>
       <li><a href="#reviews">Reviews<span class="nl-arrow" aria-hidden="true">→</span></a></li>
     </ul>
-    <a href="#contact" class="nav-cta" onclick="return openChat(event)">Free Quote</a>
+    <a href="#contact" class="nav-cta" onclick="return openChat(event)">Free estimate</a>
     <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span></button>
   </nav>
 <main id="main">
 
   <!-- ── HERO ── -->
   <section class="hero" aria-label="Desert Peak Roofing and HVAC">
-    <div class="hero-art" aria-hidden="true"><svg viewBox="0 0 680 680" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="ring"><circle cx="365" cy="310" r="258" stroke="currentColor" stroke-opacity=".14" stroke-dasharray="2 8"/></g><circle cx="365" cy="310" r="202" stroke="currentColor" stroke-opacity=".08"/><path d="M120 482 365 105 610 482H120Z" fill="currentColor" fill-opacity=".035" stroke="currentColor" stroke-opacity=".4"/><path d="m185 445 180-278 180 278H185Z" stroke="currentColor" stroke-opacity=".55"/><path d="m249 408 116-179 116 179H249Z" fill="currentColor" fill-opacity=".1" stroke="currentColor"/><path d="M365 105V576M73 482H657" stroke="currentColor" stroke-opacity=".12"/><path d="M120 503v14m490-14v14M120 510h490" stroke="currentColor" stroke-opacity=".35"/><circle cx="365" cy="105" r="5" fill="currentColor"/><circle cx="120" cy="482" r="4" fill="currentColor"/><circle cx="610" cy="482" r="4" fill="currentColor"/></svg></div>
+    <div class="hero-copy">
     <div class="hero-badge rise" style="--i:0">Roofing &amp; HVAC · Phoenix, AZ · Est. 2012</div>
     <h1 class="rise" style="--i:1">
       Built For Arizona's<br/><em>Extremes.</em>
     </h1>
     <p class="hero-sub rise" style="--i:2">
-      Desert Peak protects Phoenix homes from 115° summers, monsoon storms, and everything in between. Licensed, insured, and available 24/7 for emergencies.
+      Roof and AC help for Phoenix homes. Ask a question or book a free estimate in about a minute, any time of day.
     </p>
     <div class="hero-actions rise" style="--i:3">
       <a href="#contact" class="btn-green" onclick="return openChat(event)">
-        Get a Free Quote
+        Get a free estimate
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </a>
       <a href="tel:+16021234567" class="btn-ghost">(602) 123-4567</a>
     </div>
-    <p class="hero-chat rise" style="--i:4"><span class="live-dot" aria-hidden="true"></span>Chat with us — replies in seconds, 24/7</p>
+    <p class="hero-chat rise" style="--i:4"><span class="live-dot" aria-hidden="true"></span>Replies in seconds, 24/7</p>
+    </div>
+    <div class="hero-demo rise" style="--i:3" role="button" tabindex="0" aria-label="Open the chat and try booking" onclick="openChat(event)" onkeydown="if(event.key==='Enter'||event.key===' '){openChat(event)}">
+      <div class="demo-card" aria-hidden="true">
+        <div class="demo-head">
+          <span class="demo-mark"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 12H2L8 2Z" fill="#0c0c0c"/></svg></span>
+          <div><b>Desert Peak</b><small><span class="live-dot"></span>Replies in seconds</small></div>
+        </div>
+        <div class="demo-body">
+          <div class="msg bot">👋 Hi! What can we help with?</div>
+          <div class="chips"><span>❄️ AC Repair</span><span class="on">🏠 Roof Repair</span><span>🌬️ AC Install</span></div>
+          <div class="msg me">Roof Repair</div>
+          <div class="msg bot">📅 Last step! Pick a time 👇</div>
+          <div class="slots"><div class="slots-day">Tuesday</div><div class="slots-row"><span>9:00 AM</span><span class="on">1:30 PM</span><span>3:00 PM</span></div></div>
+          <div class="booked"><span class="tick">✓</span><div><b>You're booked!</b><small>Tuesday · 1:30 PM</small></div></div>
+        </div>
+      </div>
+      <p class="demo-cap">Tap to try it yourself</p>
+    </div>
     <div class="hero-scroll rise" style="--i:6" aria-hidden="true">
       <div class="scroll-line"></div>
       <span>Scroll</span>
@@ -459,7 +504,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
         <h2 class="sec-title rv d1">Every service your<br/>home depends on.</h2>
       </div>
       <a href="#contact" class="link-underline rv d2" onclick="return openChat(event)">
-        Schedule a free inspection →
+        Get a free estimate →
       </a>
     </div>
     <div class="services-grid">
@@ -469,7 +514,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
           <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
         </div>
         <h3>Residential Roofing</h3>
-        <p>Full replacements, repairs, and storm damage restoration. Tile, shingle, flat roof — all handled by our in-house crew with a 10-year workmanship warranty.</p>
+        <p>Repairs, replacements, and storm damage. Tile, shingle, or flat.</p>
       </div>
       <div class="svc-card rv d1">
         <div class="svc-top">
@@ -477,7 +522,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
           <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
         </div>
         <h3>Commercial Roofing</h3>
-        <p>Flat roofs, TPO, modified bitumen, and built-up systems for commercial properties. We minimize downtime and disruption during installation.</p>
+        <p>Flat roofs for shops, offices, and warehouses. Little to no downtime.</p>
       </div>
       <div class="svc-card rv">
         <div class="svc-top">
@@ -485,7 +530,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
           <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
         </div>
         <h3>HVAC Installation</h3>
-        <p>New systems, replacements, and efficiency upgrades. We work with all major brands and help you choose the right unit for Arizona's climate and your energy goals.</p>
+        <p>New AC systems built for Arizona heat.</p>
       </div>
       <div class="svc-card rv d1">
         <div class="svc-top">
@@ -493,7 +538,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
           <div class="svc-arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></div>
         </div>
         <h3>HVAC Repair &amp; Emergency</h3>
-        <p>When your AC goes out at 2am in July, we answer. 24/7 emergency response across the Phoenix metro. Same-day service for most repair calls.</p>
+        <p>AC out at 2am in July? We answer, 24/7.</p>
       </div>
     </div>
   </section>
@@ -525,7 +570,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
       <div class="about-right">
         <div class="sec-label rv">Why Desert Peak</div>
         <h2 class="sec-title rv d1">We work in Phoenix's heat<br/><em>every day.</em></h2>
-        <p class="rv d2">Most contractors avoid the summer. We built our business around it. Every crew member is trained for extreme heat environments, and every install is engineered for Arizona's brutal climate — not copied from a general contractor handbook.</p>
+        <p class="rv d2">Most contractors avoid the summer. We built our business around it.</p>
         <ul class="about-list rv d3">
           <li>In-house crews — no subcontractors, ever</li>
           <li>Manufacturer-certified for 10-year warranties</li>
@@ -534,7 +579,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
           <li>Serving Phoenix, Scottsdale, Tempe, Mesa &amp; Gilbert</li>
         </ul>
         <div class="about-cta rv d4">
-          <a href="#contact" class="btn-green" onclick="return openChat(event)">Get Your Free Quote
+          <a href="#contact" class="btn-green" onclick="return openChat(event)">Get a free estimate
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           </a>
         </div>
@@ -554,17 +599,17 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
       <li class="proc-card rv">
         <div class="proc-num">01</div>
         <h3>Free Inspection &amp; Quote</h3>
-        <p>Book online or call us. We come to you — usually same or next day — assess the situation, and hand you a written quote before we leave. No pressure, no obligation.</p>
+        <p>Book in the chat or call. We come out and give you a written quote. No pressure.</p>
       </li>
       <li class="proc-card rv d2">
         <div class="proc-num">02</div>
         <h3>We Get Permitted &amp; Scheduled</h3>
-        <p>We handle all permits and city paperwork. We'll confirm a start date that works for you, order materials, and prep everything so installation day runs clean.</p>
+        <p>We handle the permits and paperwork, and pick a start date that works for you.</p>
       </li>
       <li class="proc-card rv d4">
         <div class="proc-num">03</div>
         <h3>Installed. Inspected. Done.</h3>
-        <p>Our crew installs, cleans up completely, and walks you through everything. Final city inspection included. We don't leave until you're satisfied — and your warranty is in writing.</p>
+        <p>We install, clean up, and walk you through it. Your warranty is in writing.</p>
       </li>
     </ol>
   </section>
@@ -619,7 +664,7 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
         </div>
         <div class="sec-label rv d1">Get In Touch</div>
         <h2 class="sec-title rv d1">Ready to protect<br/>your home?</h2>
-        <p class="sec-sub rv d2">Fill out the form and you'll get an instant confirmation and a call from our team to schedule your free inspection. Same-day appointments often available.</p>
+        <p class="sec-sub rv d2">Chat with us and book your free estimate in about a minute. Same-day visits are often available.</p>
         <div class="cta-promise rv d3">
           <span>Free inspection — no commitment required</span>
           <span>Written quote before we leave your property</span>
@@ -627,34 +672,18 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
           <span>Financing available for qualified homeowners</span>
         </div>
       </div>
-      <div class="quote-panel rv d2">
-        <div class="urgency"><span class="live-dot" aria-hidden="true"></span>Slots filling fast — monsoon season</div>
-        <form class="cta-form" id="quoteForm" aria-label="Request a free quote">
-          <div class="f-row">
-            <div class="fg"><label for="field-1">First Name</label><input id="field-1" name="field-1" type="text" placeholder="John" autocomplete="given-name" required/></div>
-            <div class="fg"><label for="field-2">Last Name</label><input id="field-2" name="field-2" type="text" placeholder="Smith" autocomplete="family-name" required/></div>
-          </div>
-          <div class="f-row">
-            <div class="fg"><label for="field-3">Phone</label><input id="field-3" name="field-3" type="tel" placeholder="(602) 000-0000" autocomplete="tel" required/></div>
-            <div class="fg"><label for="field-4">Email</label><input id="field-4" name="field-4" type="email" placeholder="john@email.com" autocomplete="email" required/></div>
-          </div>
-          <div class="fg"><label for="field-5">Service Needed</label><select id="field-5" name="field-5" required>
-              <option value="" disabled selected>Select a service...</option>
-              <option>Residential Roofing — Replacement</option>
-              <option>Residential Roofing — Repair</option>
-              <option>Commercial Roofing</option>
-              <option>HVAC Installation</option>
-              <option>HVAC Repair</option>
-              <option>Emergency Service</option>
-              <option>Free Inspection (Not Sure)</option>
-            </select>
-          </div>
-          <div class="fg"><label for="field-6">Address</label><input id="field-6" name="field-6" type="text" placeholder="123 Desert View Dr, Phoenix, AZ" autocomplete="street-address" required/></div>
-          <div class="fg"><label for="field-7">Additional Details (optional)</label><textarea id="field-7" name="field-7" placeholder="Describe the issue, square footage, age of system, anything helpful..."></textarea></div>
-          <button type="submit" class="submit-btn">Request My Free Quote <span class="arr" aria-hidden="true">→</span></button>
-          <p class="f-note">Instant confirmation · Mon–Sat 6am–8pm · Emergency line 24/7</p>
-          <p class="f-note" id="formStatus" role="status">Demo form — details are not sent. Use the chat to explore the lead-capture demo.</p>
-        </form>
+      <div class="quote-panel chat-panel rv d2">
+        <div class="cp-status"><span class="live-dot" aria-hidden="true"></span>Online now · replies in seconds</div>
+        <h3 class="cp-title">Book in about<br/>a minute.</h3>
+        <ol class="cp-steps">
+          <li><span>1</span>Tell us what's wrong</li>
+          <li><span>2</span>Share your name and number</li>
+          <li><span>3</span>Pick a time that works</li>
+        </ol>
+        <a href="#contact" class="btn-green cp-btn" onclick="return openChat(event)">Get a free estimate
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <p class="cp-note">No forms. No hold music. <a href="tel:+16021234567">Or call (602) 123-4567</a></p>
       </div>
     </div>
   </section>
@@ -908,14 +937,6 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
   const sectionObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){document.querySelectorAll('.nav-links a').forEach(a=>{if(a.hash==='#'+entry.target.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}});},{rootMargin:'-15% 0px -55% 0px'});
   document.querySelectorAll('main section[id]').forEach(s=>sectionObserver.observe(s));
 
-  /* ── FORM ── */
-  document.getElementById('quoteForm')?.addEventListener('submit',e=>{
-    e.preventDefault();
-    const b=e.target.querySelector('.submit-btn');
-    b.textContent="Request Received — We'll Be In Touch Shortly.";
-    b.disabled=true;
-    document.getElementById('formStatus').textContent='Demo complete — your entries were validated, but no request was sent. Use the chat to explore the lead-capture demo.';
-  });
   </script>
   <script>
     /* Always open the page at the top, unless someone used a #section link */
@@ -998,6 +1019,11 @@ footer{padding:var(--s9) var(--pad) var(--s6);background:var(--surface);border-t
         var root = host && host.shadowRoot;
         if (!root) return;
         clearInterval(timer);
+        /* Phones: turn the wide "Get a free estimate" pill into a small round button */
+        var st = document.createElement('style');
+        st.textContent = '@media (max-width:560px){.vfrc-launcher__label,.vfrc-launcher__chevron{display:none!important}' +
+          '.vfrc-launcher.vfrc-launcher--with-label{width:56px!important;height:56px!important;min-width:0!important;padding:0!important;border-radius:50%!important;justify-content:center!important}}';
+        root.appendChild(st);
         scan(root);
         new MutationObserver(function () { scan(root); }).observe(root, { childList: true, subtree: true, characterData: true });
       }, 500);
